@@ -1,3 +1,4 @@
+import 'package:dashboard/menu/menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 import 'package:dashboard/map/colored_map.dart';
@@ -69,22 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: c,
                 borderRadius: _borderRadius,
               ),
-              child: Column(
-                  children: <Widget>[
-                    Text( //<----- INTERIEUR DU MENU A GAUCHE
-                      '$currentCountryName',
-                      textDirection: TextDirection.ltr,
-                    ),
-                    Text( //<----- INTERIEUR DU MENU A GAUCHE
-                      'abcd',
-                      textDirection: TextDirection.ltr,
-                    ),
-                    Text( //<----- INTERIEUR DU MENU A GAUCHE
-                      'ifizeujfz',
-                      textDirection: TextDirection.ltr,
-                    ),
-                  ]
-              ),
+              child: const Menu(), //Menu Widget
             ),
             onTap: () {
               setState(() {
