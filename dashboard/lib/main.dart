@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:dashboard/map/country_iso_util.dart';
+import 'package:dashboard/map/colored_map.dart';
+import 'package:dashboard/map/map_widget.dart';
 import 'config.dart';
 
 void main() {
@@ -27,14 +30,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   double _width = 100;
   double _height = 100;
   MaterialColor c = Colors.blue;
   BorderRadiusGeometry _borderRadius = BorderRadius.circular(50);
 
   bool isMenuOpen = false;
+
+  String currentCountry = ""; //variable qui stock l'iso du pays colorié actuellement
+  String previousCountry = "";
+  String currentCountryName = ""; //Variable qui stock le nom textuel du pays
+
+  void onColorChange(String id){
+    setState(() {
+      previousCountry = currentCountry;
+      currentCountry = id;
+      currentCountryName = getCountryWithIso(id)!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                   children: <Widget>[
                     Text( //<----- INTERIEUR DU MENU A GAUCHE
-                      'NOM DU PAYS',
+                      '$currentCountryName',
                       textDirection: TextDirection.ltr,
                     ),
                     Text( //<----- INTERIEUR DU MENU A GAUCHE
@@ -95,11 +108,19 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               alignment: Alignment.center,
               height: MediaQuery.of(context).size.height,
-              color: const Color.fromRGBO(0,255,0,1.0),
-              child: const Text(
-                'Map',
-                textDirection: TextDirection.ltr,
-              )
+              color: const Color.fromRGBO(45, 52, 54,1.0),
+              child: ColoredMap(
+                currentCountry: currentCountry,
+                previousCountry: previousCountry,
+                onColorChange: onColorChange,
+                child: InteractiveViewer(
+                  maxScale: 75.0,
+                  child: MapWidget(
+                    key: UniqueKey(),
+                    onMapColorChange: onColorChange,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
