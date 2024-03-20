@@ -1,5 +1,5 @@
-import 'package:dashboard/menu/menu_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:dashboard/menu/menu_widget.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 import 'package:dashboard/map/colored_map.dart';
 import 'package:dashboard/map/map_widget.dart';
@@ -8,13 +8,13 @@ import 'config.dart';
 void main() {
   runApp(const MyApp());
 }
-//Classe pour la material app -> juste là pour gérer le layout mais il n'y a "aucun" widget" dedans
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       home: MyHomePage(title: dashboardTitle),
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -31,18 +31,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  double _width = 100;
-  double _height = 100;
-  MaterialColor c = Colors.blue;
-  BorderRadiusGeometry _borderRadius = BorderRadius.circular(50);
+  double _width = 50; // Taille plus petite pour le bouton
+  double _height = 50; // Taille plus petite pour le bouton
+  Color c = mistyRose; // Couleur pour le bouton
+  BorderRadiusGeometry _borderRadius = BorderRadius.circular(20); // Forme légèrement carrée
+  IconData _icon = Icons.add; // Icône de +
 
   bool isMenuOpen = false;
 
-  String currentCountry = ""; //variable qui stock l'iso du pays colorié actuellement
+  String currentCountry = "";
   String previousCountry = "";
-  String currentCountryName = ""; //Variable qui stock le nom textuel du pays
+  String currentCountryName = "";
 
-  void onColorChange(String id){
+  void onColorChange(String id) {
     setState(() {
       previousCountry = currentCountry;
       currentCountry = id;
@@ -50,68 +51,119 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void toggleMenu() {
+    setState(() {
+      if (isMenuOpen) {
+        _width = 50; // Retour à la taille initiale
+        _height = 50; // Retour à la taille initiale
+        _borderRadius = BorderRadius.circular(20); // Forme légèrement carrée
+        c = mistyRose; //Couleur
+        _icon = Icons.add;
+        isMenuOpen = false;
+      } else {
+        _width = MediaQuery.of(context).size.width * 0.3; // Nouvelle largeur du volet
+        _height = MediaQuery.of(context).size.height - 90; // Taille de l'écran moins 90 pixels en haut
+        _borderRadius = BorderRadius.circular(0);
+        c = mistyRose; // Couleur lorsque le volet est ouvert
+        _icon = Icons.remove;
+        isMenuOpen = true;
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Colors.pink,
-      ),
-      body: Row(
-        children: <Widget>[
-          InkWell(
-            child: AnimatedContainer(
-              alignment: Alignment.center,
-              height: _height,
-              width: _width,
-              duration: const Duration(seconds: 1),
-              curve: Curves.fastOutSlowIn,
-              decoration: BoxDecoration(
-                color: c,
-                borderRadius: _borderRadius,
-              ),
-              child: const Menu(), //Menu Widget
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(90),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+                'plane.jpeg',
+                fit: BoxFit.cover,
+                alignment: Alignment(0, -0.4) // Aligner l'image en haut
             ),
-            onTap: () {
-              setState(() {
-                if(isMenuOpen){
-                  _width = 100;
-                  _height = 100;
-                  _borderRadius = BorderRadius.circular(50);
-                  c = Colors.blue;
-                  isMenuOpen = false;
-                }else{
-                  _width = MediaQuery.of(context).size.width*0.3;
-                  _height = MediaQuery.of(context).size.height;
-                  _borderRadius = BorderRadius.circular(0);
-                  c = Colors.red;
-                  isMenuOpen = true;
-                }
-              });
-            },
-          ),
-          Expanded(
+            Positioned(
+              top: 20,
+              left: 0,
+              right: 0,
+              child: AppBar(
+                title: Text(
+                  "Always wanted...                                                ...to escape ?",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
+                  ),
+                ),
+                centerTitle: true,
+                elevation: 0.0,
+                backgroundColor: Colors.transparent,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            left: isMenuOpen ? 0 : null,
+            right: isMenuOpen ? null : 0,
             child: Container(
-              alignment: Alignment.center,
-              height: MediaQuery.of(context).size.height,
-              color: const Color.fromRGBO(45, 52, 54,1.0),
-              child: ColoredMap(
-                currentCountry: currentCountry,
-                previousCountry: previousCountry,
-                onColorChange: onColorChange,
-                child: InteractiveViewer(
-                  maxScale: 75.0,
-                  child: MapWidget(
-                    key: UniqueKey(),
-                    onMapColorChange: onColorChange,
+              color: Colors.black.withOpacity(0.1),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              InkWell(
+                onTap: toggleMenu,
+                child: AnimatedContainer(
+                  alignment: Alignment.center,
+                  height: _height,
+                  width: _width,
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.fastOutSlowIn,
+                  decoration: BoxDecoration(
+                    color: c,
+                    borderRadius: _borderRadius,
+                  ),
+                  margin: EdgeInsets.only(top: 90), // Décaler le volet vers le bas de 90 pixels
+                  child: Menu(isMenuOpen: isMenuOpen),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  alignment: Alignment.center,
+                  height: MediaQuery.of(context).size.height,
+                  color: const Color.fromRGBO(45, 52, 54, 1.0),
+                  child: ColoredMap(
+                    currentCountry: currentCountry,
+                    previousCountry: previousCountry,
+                    onColorChange: onColorChange,
+                    child: InteractiveViewer(
+                      maxScale: 75.0,
+                      child: MapWidget(
+                        key: UniqueKey(),
+                        onMapColorChange: onColorChange,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
-      backgroundColor: const Color.fromRGBO(45, 52, 54,1.0),
+      backgroundColor: const Color.fromRGBO(45, 52, 54, 1.0),
     );
   }
 }
+
+
+
+
+
