@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:country_icons/country_icons.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key, required this.isMenuOpen}) : super(key: key);
 
   final bool isMenuOpen;
-  //double _sliderValue = 0.0; // Variable pour stocker la valeur sélectionnée du slider
-
 
   @override
   _MenuState createState() => _MenuState();
@@ -21,24 +21,23 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 700), // Durée de l'animation
+      duration: Duration(milliseconds: 700),
     );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   }
-//qsfjk<q foZQSF
+
   @override
   void didUpdateWidget(covariant Menu oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isMenuOpen) {
-      _controller.forward(); // Lance l'animation vers l'état ouvert
-      // Retarde l'affichage des éléments avec un délai de 300 millisecondes après que le volet soit complètement ouvert
+      _controller.forward();
       Future.delayed(Duration(milliseconds: 300), () {
         setState(() {
           _showElements = true;
         });
       });
     } else {
-      _controller.reverse(); // Lance l'animation vers l'état fermé
+      _controller.reverse();
       setState(() {
         _showElements = false;
       });
@@ -47,7 +46,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose(); // Libère les ressources de l'animation
+    _controller.dispose();
     super.dispose();
   }
 
@@ -57,58 +56,49 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
       animation: _animation,
       builder: (context, child) {
         return Visibility(
-          visible: _animation.value == 1.0, // Affiche les enfants uniquement lorsque le volet est complètement ouvert
+          visible: _animation.value == 1.0,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.3,
-            color: Color.fromRGBO(209, 203, 197, 1.0), // Couleur de l'enfant dans le volet
+            color: Color.fromRGBO(209, 203, 197, 1.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 40), // Ajout d'un petit espace
+                SizedBox(height: 40),
                 Text(
-                  'Données complémentaires',
+                  'Nom du pays',
                   style: TextStyle(
-                    fontSize: 22, // Augmente la taille de la police
-                    fontWeight: FontWeight.bold, // Met en gras
-                    fontFamily: 'Roboto', // Utilise la police Roboto
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
                   ),
                 ),
-                SizedBox(height: 40), // Espace supplémentaire
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top, // Hauteur maximale
+                SizedBox(height: 40),
+                ExpansionTileCard(
+                  leading: Image.asset(
+                    'flags/fr.jpg',
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 1), // Bordure plus fine
-                        borderRadius: BorderRadius.circular(4), // Coins plus arrondis
-                      ),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          //canvasColor: Colors.brown[400], // Couleur d'arrière-plan en wenge pour la liste déroulante
-                        ),
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          underline: SizedBox(), // Supprime la ligne en dessous du bouton
-                          hint: Text('Pays de destination'), // Titre par défaut
-                          items: <String>['Japon', 'Corée du Nord', 'Antarctique', 'Haïti']
-                              .map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            // Add your logic here
-                          },
+
+                  //CircleAvatar(
+                    //backgroundImage: AssetImage('plane.jpg'),
+                    //radius: 50, // ajustez le rayon en fonction de vos besoins
+                  //),
+                  title: Text('Pays 1'),
+
+                  subtitle: Text("Nombres de villes / d'aéroports"),
+                  children: <Widget>[
+                    Divider(thickness: 1.0, height: 1.0),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                        child: Text(
+                          """Ville 1\nVille 2""",
+                          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
                 const SizedBox(height: 60),
                 Slider(

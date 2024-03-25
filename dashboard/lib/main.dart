@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'WorldFlightInfo',
       debugShowCheckedModeBanner: false,
       home: MyHomePage(title: dashboardTitle),
     );
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 0,
               child: AppBar(
                 title: Text(
-                  "Always wanted...                                                ...to escape ?",
+                  "WorldFLightInfo",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 26,
@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             left: isMenuOpen ? 0 : null,
             right: isMenuOpen ? null : 0,
             child: Container(
-              color: Colors.black.withOpacity(0.1),
+              //color: Colors.black.withOpacity(0.0),
             ),
           ),
           Row(
