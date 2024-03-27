@@ -38,7 +38,7 @@ class CustomColors {
     100: Color.fromRGBO(255, 182, 193, 1),
     200: Color.fromRGBO(255, 182, 193, 1),
     300: Color.fromRGBO(255, 182, 193, 1),
-    400: Color.fromRGBO(255, 182, 193, 1),
+    400: Color.fromRGBO(30, 28, 28, 1.0),
     500: Color.fromRGBO(255, 182, 193, 1),
     600: Color.fromRGBO(209, 203, 193, 1.0),
     700: Color.fromRGBO(255, 228, 225, 1.0),

@@ -10,8 +10,7 @@ import '../type/destination_country.dart';
 import 'destination_country_card.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({Key? key, required this.isMenuOpen, required this.destinations})
-      : super(key: key);
+  const Menu({Key? key, required this.isMenuOpen}) : super(key: key);
 
   final bool isMenuOpen;
   final List<DestinationCountry> destinations;
@@ -27,6 +26,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   bool _showElements = false;
   String? _selectedCountry;
   bool _showCountryOptions = false;
+
 
   @override
   void initState() {
@@ -105,6 +105,50 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     );
   }
 
+  Widget _buildCountriesDestExpansionTileCard(
+      String title, String iso, List<String> cities) {
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Bordure de la Card
+        //side: BorderSide(color: Colors.grey), // Couleur de la bordure de la Card
+      ),
+      child: ExpansionTile(
+        backgroundColor: Colors.white, // Couleur de fond de la tuile
+        //iconColor: Colors.black, // Couleur de l'icône lorsque la tuile est ouverte
+        textColor: Colors.black, // Couleur du texte
+        //collapsedTextColor: Colors.black, // Couleur du texte lorsque la tuile est réduite
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(15), // Bordure de la tuile réduite
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(15), // Bordure de la tuile ouverte
+        ),
+        leading: CircleAvatar(
+          backgroundImage: AssetImage('flags/$iso.jpg'),
+          radius: 15,
+        ),
+        title: Text(title),
+        subtitle: Text("Nombres de villes / d'aéroports"),
+        children: cities.map((city) => _buildCityExpansionTile(city)).toList(),
+      ),
+    );
+  }
+
+  Widget _buildCityExpansionTile(String city) {
+    return ListTile(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      title: Text(city),
+      onTap: () {
+        _showTravelDetailsDialog(context, city);
+      },
+    );
+  }
+
   Widget _buildCountryExpansionTile() {
     return Card(
       clipBehavior: Clip.hardEdge,
@@ -164,5 +208,131 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
         _selectedCountry = value; // Sélectionner la nouvelle option
       }
     });
+  }
+
+  void _showTravelDetailsDialog(BuildContext context, String city) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Détails du trajet de xxx à $city'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                  'CO2 produit : beaucoup trop     Distance : 15243 kms\nTemps moyen de trajet : 12h \nPrix moyen de ce trajet : une ptite somme quand même'),
+              SizedBox(height: 20),
+              Column(
+                children: [
+                  Text(
+                    'Prix moyen par mois de ce trajet',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    child: LineChart(
+                      LineChartData(
+                        minY: 0,
+                        maxY: 500,
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: [
+                              FlSpot(1, 100),
+                              FlSpot(2, 150),
+                              FlSpot(3, 200),
+                              FlSpot(4, 50),
+                              FlSpot(5, 300),
+                              FlSpot(6, 25),
+                              FlSpot(7, 75),
+                              FlSpot(8, 420),
+                              FlSpot(9, 40),
+                              FlSpot(10, 60),
+                              FlSpot(11, 200),
+                              FlSpot(12, 100),
+                              FlSpot(13, 30),
+                            ],
+                            isCurved: true,
+                            colors: [Colors.lightBlueAccent],
+                            barWidth: 4,
+                          ),
+                        ],
+                        titlesData: FlTitlesData(
+                          bottomTitles: SideTitles(
+                            showTitles: true,
+                            getTextStyles: (value) => const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                            getTitles: (value) {
+                              switch (value.toInt()) {
+                                case 1:
+                                  return 'Jan';
+                                case 2:
+                                  return 'Fev';
+                                case 3:
+                                  return 'Mar';
+                                case 4:
+                                  return 'Avr';
+                                case 5:
+                                  return 'Mai';
+                                case 6:
+                                  return 'Juin';
+                                case 7:
+                                  return 'Juil';
+                                case 8:
+                                  return 'Août';
+                                case 9:
+                                  return 'Sept';
+                                case 10:
+                                  return 'Oct';
+                                case 11:
+                                  return 'Nov';
+                                case 12:
+                                  return 'Dec';
+                                default:
+                                  return '';
+                              }
+                            },
+                          ),
+                          leftTitles: SideTitles(
+                            showTitles: true,
+                            getTextStyles: (value) => const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                            getTitles: (value) {
+                              if (value % 100 == 0) {
+                                return value.toInt().toString();
+                              } else {
+                                return '';
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Fermer'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
