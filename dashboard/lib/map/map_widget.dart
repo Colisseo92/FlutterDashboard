@@ -6,6 +6,9 @@ import 'country_iso_util.dart';
 import 'colored_map.dart';
 import 'package:dashboard/config.dart';
 import 'package:flutter/material.dart';
+import 'package:dashboard/requests/countries.dart';
+import 'package:dashboard/requests/airport.dart';
+import 'package:dashboard/requests/result.dart';
 
 //Création d'un type (comme int ou double) qui permet de recquérir une fonction
 typedef MapColorCallback = void Function(String countryId);
@@ -23,6 +26,9 @@ class MapWidget extends StatelessWidget{
     if(ColoredMap.of(context)!.previousCountry != ""){ //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
       getCountriesColor()[ColoredMap.of(context)!.previousCountry] = countryEmptyColor;
     }
+    for(final country in getCountries()){
+      getCountriesColor()[country] = Colors.pink;
+    }
     return getCountriesColor();
   }
 
@@ -36,7 +42,13 @@ class MapWidget extends StatelessWidget{
       colors: getMapOfColoredCountry(context),
 
       callback: (id,name,tapDetails){
+        print("Countries : ${getCountries()}");
+        if(id != "") {
+          fetchAirport(id.toString());
+          fetchCountry(id.toString());
+        }
         onMapColorChange(id.toString());
+        print("Country Clicked ISO : ${id}");
         print("Country Clicked : ${getCountryWithIso(id)}");
       }, //calback
     );
