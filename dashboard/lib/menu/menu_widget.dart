@@ -3,11 +3,14 @@ import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 import 'package:dashboard/map/colored_map.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:dashboard/requests/result.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key, required this.isMenuOpen}) : super(key: key);
 
   final bool isMenuOpen;
+  //double _sliderValue = 0.0; // Variable pour stocker la valeur sélectionnée du slider
+
 
   @override
   _MenuState createState() => _MenuState();
