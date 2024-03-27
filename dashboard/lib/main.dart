@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isMenuOpen = false;
       } else {
         _width = MediaQuery.of(context).size.width * 0.3; // Nouvelle largeur du volet
-        _height = MediaQuery.of(context).size.height - 90; // Taille de l'écran moins 90 pixels en haut
+        _height = MediaQuery.of(context).size.height ; // Taille de l'écran
         _borderRadius = BorderRadius.circular(30);
         c = mistyRose; // Couleur lorsque le volet est ouvert
         _icon = Icons.remove;
@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
+
 
 
   @override
