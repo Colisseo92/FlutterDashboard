@@ -63,28 +63,39 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           visible: _animation.value == 1.0,
           child: Container(
             width: MediaQuery.of(context).size.width * 0.3,
-            color: Color.fromRGBO(209, 203, 197, 1.0),
+            color: Color.fromRGBO(209, 203, 197, 1.0), //couleur du volet
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
-                _buildCountryExpansionTile(), // Utilisation du nouveau ExpansionTile
-                ListView(
+                _buildCountryExpansionTile(), // Génération de la tile du pays cliqué
+                Expanded(
+                  child: ListView(
                   shrinkWrap: true,
                   children: [
-                    _buildExpansionTileCard('Pays 1', [
+                    _buildCountriesDestExpansionTileCard('Pays 1', [ //génération des tiles des pays destination
                       'Ville 1 - Aeroport',
                       'Ville 2 - Aeroport'
                     ]),
-                    _buildExpansionTileCard('Pays 2', [
+                    _buildCountriesDestExpansionTileCard('Pays 2', [
+                      'Ville 1 - Aeroport 1',
+                      'Ville 1 - Aeroport 2'
+                    ]),
+                    _buildCountriesDestExpansionTileCard('Pays 3', [
+                      'Ville 1 - Aeroport 1',
+                      'Ville 1 - Aeroport 2'
+                    ]),
+                    _buildCountriesDestExpansionTileCard('Pays 4', [
                       'Ville 1 - Aeroport 1',
                       'Ville 1 - Aeroport 2'
                     ]),
                   ],
                 ),
-                const SizedBox(height: 10),
-              ],
+
+                ),
+            const SizedBox(height: 10),
+            ]
             ),
           ),
         );
@@ -98,25 +109,40 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
       title: Text(title),
       value: title,
       groupValue: _selectedCountry,
-      onChanged: (value) {
-        setState(() {
-          _selectedCountry = value.toString();
-        });
-      },
+      onChanged: _onRadioListTileSelected,
     );
   }
 
-  Widget _buildExpansionTileCard(String title, List<String> cities) {
-    return ExpansionTileCard(
-      leading: CircleAvatar(
-        backgroundImage: AssetImage('flags/th.jpg'),
-        radius: 15,
+  Widget _buildCountriesDestExpansionTileCard(String title, List<String> cities) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15), // Bordure de la Card
+        //side: BorderSide(color: Colors.grey), // Couleur de la bordure de la Card
       ),
-      title: Text(title),
-      subtitle: Text("Nombres de villes / d'aéroports"),
-      children: cities.map((city) => _buildCityExpansionTile(city)).toList(),
+      child: ExpansionTile(
+        backgroundColor: Colors.white, // Couleur de fond de la tuile
+        //iconColor: Colors.black, // Couleur de l'icône lorsque la tuile est ouverte
+        textColor: Colors.black, // Couleur du texte
+        //collapsedTextColor: Colors.black, // Couleur du texte lorsque la tuile est réduite
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Bordure de la tuile réduite
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Bordure de la tuile ouverte
+        ),
+        leading: CircleAvatar(
+          backgroundImage: AssetImage('flags/th.jpg'),
+          radius: 15,
+        ),
+        title: Text(title),
+        subtitle: Text("Nombres de villes / d'aéroports"),
+        children: cities.map((city) => _buildCityExpansionTile(city)).toList(),
+      ),
     );
   }
+
+
+
 
   Widget _buildCityExpansionTile(String city) {
     return ListTile(
@@ -131,31 +157,57 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   }
 
   Widget _buildCountryExpansionTile() {
-    return ExpansionTileCard(
-      leading: CircleAvatar(
-        backgroundImage: AssetImage('flags/th.jpg'),
-        radius: 15,
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25), // Rayon de la bordure de la Card
       ),
-      title: Text('Pays'),
-
-      onExpansionChanged: (expanded) {
-        setState(() {
-          _showCountryOptions = expanded;
-        });
-      },
-      trailing: Icon(
-        _showCountryOptions
-            ? Icons.keyboard_arrow_up
-            : Icons.keyboard_arrow_down,
+      elevation: 1, // Élévation de la Card
+      child: Container( // Envelopper la ExpansionTile dans un Container
+         child: ExpansionTile(
+           collapsedShape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(15), // Bordure de la tuile réduite
+           ),
+           shape: RoundedRectangleBorder(
+             borderRadius: _showCountryOptions
+                 ? BorderRadius.circular(30) // Bordure de la tuile ouverte
+                 : BorderRadius.circular(0), // Bordure de la tuile réduite // Bordure de la tuile ouverte
+           ),
+          tilePadding: EdgeInsets.symmetric(horizontal: 16.0), // Espacement interne de la ExpansionTile
+          leading: CircleAvatar(
+            backgroundImage: AssetImage('flags/th.jpg'),
+            radius: 15,
+          ),
+          title: Text('Départ : Pays'),
+          onExpansionChanged: (expanded) {
+            setState(() {
+              _showCountryOptions = expanded;
+            });
+          },
+          trailing: Icon(
+            _showCountryOptions
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down,
+          ),
+          children: _showCountryOptions
+              ? [
+            _buildRadioListTile('Aeroport 1'),
+            _buildRadioListTile('Aeroport 2'),
+            _buildRadioListTile('Aeroport 3'),
+          ]
+              : [],
+        ),
       ),
-      children: _showCountryOptions
-          ? [
-        _buildRadioListTile('Aeroport 1'),
-        _buildRadioListTile('Aeroport 2'),
-        _buildRadioListTile('Aeroport 3'),
-      ]
-          : [],
     );
+  }
+
+  void _onRadioListTileSelected(String? value) {
+    setState(() {
+      if (_selectedCountry == value) {
+        _selectedCountry = null; // Déselectionner si la même option est sélectionnée
+      } else {
+        _selectedCountry = value; // Sélectionner la nouvelle option
+      }
+    });
   }
 
 
