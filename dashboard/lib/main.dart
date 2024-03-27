@@ -56,14 +56,14 @@ class _MyHomePageState extends State<MyHomePage> {
       if (isMenuOpen) {
         _width = 50; // Retour à la taille initiale
         _height = 50; // Retour à la taille initiale
-        _borderRadius = BorderRadius.circular(20); // Forme légèrement carrée
+        _borderRadius = BorderRadius.circular(30); // Forme légèrement carrée
         c = mistyRose; //Couleur
         _icon = Icons.add;
         isMenuOpen = false;
       } else {
         _width = MediaQuery.of(context).size.width * 0.3; // Nouvelle largeur du volet
         _height = MediaQuery.of(context).size.height - 90; // Taille de l'écran moins 90 pixels en haut
-        _borderRadius = BorderRadius.circular(0);
+        _borderRadius = BorderRadius.circular(30);
         c = mistyRose; // Couleur lorsque le volet est ouvert
         _icon = Icons.remove;
         isMenuOpen = true;
@@ -92,15 +92,23 @@ class _MyHomePageState extends State<MyHomePage> {
               right: 0,
               child: AppBar(
                 title: Text(
-                  "WorldFLightInfo",
+                  "   WorldFlightInfo",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
+                    fontFamily: 'Signika',
                   ),
                 ),
-                centerTitle: true,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      // Ajoutez ici la logique pour la recherche
+                    },
+                    icon: Icon(Icons.search),
+                  ),
+                ],
+                centerTitle: false,
                 elevation: 0.0,
                 backgroundColor: Colors.transparent,
               ),
@@ -129,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   curve: Curves.fastOutSlowIn,
                   decoration: BoxDecoration(
                     color: c,
-                    borderRadius: _borderRadius,
+                    borderRadius: isMenuOpen ? BorderRadius.circular(20) : BorderRadius.circular(20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                   ),
                   margin: EdgeInsets.only(top: 90), // Décaler le volet vers le bas de 90 pixels
                   child: Menu(isMenuOpen: isMenuOpen),
