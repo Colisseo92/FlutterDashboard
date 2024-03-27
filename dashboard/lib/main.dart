@@ -34,7 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double _width = 50; // Taille plus petite pour le bouton
   double _height = 50; // Taille plus petite pour le bouton
   Color c = mistyRose; // Couleur pour le bouton
-  BorderRadiusGeometry _borderRadius = BorderRadius.circular(20); // Forme légèrement carrée
+  BorderRadiusGeometry _borderRadius =
+      BorderRadius.circular(20); // Forme légèrement carrée
   IconData _icon = Icons.add; // Icône de +
 
   bool isMenuOpen = false;
@@ -48,30 +49,32 @@ class _MyHomePageState extends State<MyHomePage> {
       previousCountry = currentCountry;
       currentCountry = id;
       currentCountryName = getCountryWithIso(id)!;
+      if (id == "") {
+        toggleMenu();
+      }
     });
   }
 
   void toggleMenu() {
     setState(() {
       if (isMenuOpen) {
-        _width = 50; // Retour à la taille initiale
-        _height = 50; // Retour à la taille initiale
-        _borderRadius = BorderRadius.circular(30); // Forme légèrement carrée
+        _width = 0; // Retour à la taille initiale
+        _height = 0; // Retour à la taille initiale
+        _borderRadius = BorderRadius.circular(50); // Forme légèrement carrée
         c = mistyRose; //Couleur
         _icon = Icons.add;
         isMenuOpen = false;
       } else {
-        _width = MediaQuery.of(context).size.width * 0.3; // Nouvelle largeur du volet
-        _height = MediaQuery.of(context).size.height ; // Taille de l'écran
-        _borderRadius = BorderRadius.circular(30);
+        _width = MediaQuery.of(context).size.width *
+            0.3; // Nouvelle largeur du volet
+        _height = MediaQuery.of(context).size.height; // Taille de l'écran
+        _borderRadius = BorderRadius.circular(10);
         c = mistyRose; // Couleur lorsque le volet est ouvert
         _icon = Icons.remove;
         isMenuOpen = true;
       }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-                'plane.jpeg',
+            Image.asset('plane.jpeg',
                 fit: BoxFit.cover,
                 alignment: Alignment(0, -0.4) // Aligner l'image en haut
-            ),
+                ),
             Positioned(
               top: 20,
               left: 0,
@@ -123,14 +125,15 @@ class _MyHomePageState extends State<MyHomePage> {
             left: isMenuOpen ? 0 : null,
             right: isMenuOpen ? null : 0,
             child: Container(
-              //color: Colors.black.withOpacity(0.0),
-            ),
+                //color: Colors.black.withOpacity(0.0),
+                ),
           ),
           Row(
             children: <Widget>[
               InkWell(
                 onTap: toggleMenu,
                 child: AnimatedContainer(
+                  margin: const EdgeInsets.only(top: 90),
                   alignment: Alignment.center,
                   height: _height,
                   width: _width,
@@ -138,9 +141,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   curve: Curves.fastOutSlowIn,
                   decoration: BoxDecoration(
                     color: c,
-                    borderRadius: isMenuOpen ? BorderRadius.circular(20) : BorderRadius.circular(20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
+                    borderRadius: isMenuOpen
+                        ? BorderRadius.circular(20)
+                        : BorderRadius.circular(
+                            20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                   ),
-                  margin: EdgeInsets.only(top: 90), // Décaler le volet vers le bas de 90 pixels
+                  // Décaler le volet vers le bas de 90 pixels
                   child: Menu(isMenuOpen: isMenuOpen),
                 ),
               ),
@@ -171,8 +177,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-
-
-

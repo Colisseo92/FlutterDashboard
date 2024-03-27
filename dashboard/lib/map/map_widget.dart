@@ -13,39 +13,44 @@ import 'package:dashboard/requests/result.dart';
 //Création d'un type (comme int ou double) qui permet de recquérir une fonction
 typedef MapColorCallback = void Function(String countryId);
 
-class MapWidget extends StatelessWidget{
-  const MapWidget({super.key,required this.onMapColorChange});
+class MapWidget extends StatelessWidget {
+  const MapWidget({super.key, required this.onMapColorChange});
 
-  final MapColorCallback onMapColorChange; //fonction utilisé pour changer le pays actuel et ancien pays coloré
+  final MapColorCallback
+      onMapColorChange; //fonction utilisé pour changer le pays actuel et ancien pays coloré
 
   //Fonction qui permet de changer le pays coloré
-  Map<String,Color> getMapOfColoredCountry(BuildContext context){
-    if(ColoredMap.of(context)!.currentCountry != ""){ //Si le pays qui doit être colorié n'est pas nul ou une chaine vide
-      getCountriesColor()[ColoredMap.of(context)!.currentCountry] = countryFullColor; //Changer la valeur de sa couleur dans la Map qui gère la couleur des pays
+  Map<String, Color> getMapOfColoredCountry(BuildContext context) {
+    if (ColoredMap.of(context)!.currentCountry != "") {
+      //Si le pays qui doit être colorié n'est pas nul ou une chaine vide
+      getCountriesColor()[ColoredMap.of(context)!.currentCountry] =
+          countryFullColor; //Changer la valeur de sa couleur dans la Map qui gère la couleur des pays
     }
-    if(ColoredMap.of(context)!.previousCountry != ""){ //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
-      getCountriesColor()[ColoredMap.of(context)!.previousCountry] = countryEmptyColor;
+    if (ColoredMap.of(context)!.previousCountry != "") {
+      //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
+      getCountriesColor()[ColoredMap.of(context)!.previousCountry] =
+          countryEmptyColor;
     }
-    for(final country in getCountries()){
+    for (final country in getCountries()) {
       getCountriesColor()[country] = Colors.pink;
     }
     return getCountriesColor();
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return SimpleMap(
       instructions: SMapWorld.instructions,
-      countryBorder: CountryBorder(color: Colors.white,width:1),
+      countryBorder: CountryBorder(color: Colors.white, width: 1),
       defaultColor: mapBackgroundColor,
 
       colors: getMapOfColoredCountry(context),
 
-      callback: (id,name,tapDetails){
+      callback: (id, name, tapDetails) async {
         print("Countries : ${getCountries()}");
-        if(id != "") {
-          fetchAirport(id.toString());
-          fetchCountry(id.toString());
+        if (id != "") {
+          await fetchAirport(id.toString());
+          await fetchCountry(id.toString());
         }
         onMapColorChange(id.toString());
         print("Country Clicked ISO : ${id}");
