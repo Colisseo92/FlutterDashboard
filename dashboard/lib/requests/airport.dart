@@ -17,4 +17,5 @@ Future<void> fetchAirport(iso) async {
     apiDatas.update('answer', (value) => '[]');
   }
 }
+
 //https://pub.dev/packages/side_sheet
