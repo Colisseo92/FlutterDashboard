@@ -1,6 +1,7 @@
 //Widget qui permet d'afficher la carte
 import 'package:countries_world_map/countries_world_map.dart';
 import 'package:countries_world_map/data/maps/world_map.dart';
+import 'package:dashboard/requests/destination.dart';
 import 'country_color_util.dart';
 import 'country_iso_util.dart';
 import 'colored_map.dart';
@@ -32,7 +33,7 @@ class MapWidget extends StatelessWidget {
           countryEmptyColor;
     }
     for (final country in getCountries()) {
-      getCountriesColor()[country] = Colors.pink;
+      getCountriesColor()[country] = const Color.fromRGBO(232, 255, 175, 1.0);
     }
     return getCountriesColor();
   }
@@ -41,20 +42,17 @@ class MapWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SimpleMap(
       instructions: SMapWorld.instructions,
-      countryBorder: CountryBorder(color: Colors.white, width: 1),
+      countryBorder: CountryBorder(color: Colors.black, width: 0.1),
       defaultColor: mapBackgroundColor,
 
       colors: getMapOfColoredCountry(context),
 
       callback: (id, name, tapDetails) async {
-        print("Countries : ${getCountries()}");
         if (id != "") {
           await fetchAirport(id.toString());
           await fetchCountry(id.toString());
         }
         onMapColorChange(id.toString());
-        print("Country Clicked ISO : ${id}");
-        print("Country Clicked : ${getCountryWithIso(id)}");
       }, //calback
     );
   }

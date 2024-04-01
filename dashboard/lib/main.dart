@@ -1,3 +1,6 @@
+import 'package:dashboard/requests/destination.dart';
+import 'package:dashboard/requests/result.dart';
+import 'package:dashboard/type/destination_country.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/menu/menu_widget.dart';
 import 'package:dashboard/map/country_iso_util.dart';
@@ -40,36 +43,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isMenuOpen = false;
 
+  List<DestinationCountry> destinations = [];
+
   String currentCountry = "";
   String previousCountry = "";
   String currentCountryName = "";
 
-  void onColorChange(String id) {
+  void onColorChange(String id) async {
+    List<DestinationCountry> _destinations = [];
+    if (id != "") {
+      _destinations = await getDestinationCountry(id.toString());
+    }
     setState(() {
       previousCountry = currentCountry;
       currentCountry = id;
       currentCountryName = getCountryWithIso(id)!;
+      if (id.toString() != "") {
+        destinations = _destinations;
+      }
       if (id == "") {
         toggleMenu();
       }
     });
+    for (final e in destinations) {
+      print(e.iso);
+      e.displayAirport();
+    }
   }
 
   void toggleMenu() {
     setState(() {
       if (isMenuOpen) {
         _width = 0; // Retour à la taille initiale
-        _height = 0; // Retour à la taille initiale
+        _height = MediaQuery.of(context).size.height; // Taille de l'écran
         _borderRadius = BorderRadius.circular(50); // Forme légèrement carrée
-        c = mistyRose; //Couleur
+        c = surface_color; //Couleur
         _icon = Icons.add;
         isMenuOpen = false;
       } else {
         _width = MediaQuery.of(context).size.width *
-            0.3; // Nouvelle largeur du volet
+            0.2; // Nouvelle largeur du volet
         _height = MediaQuery.of(context).size.height; // Taille de l'écran
-        _borderRadius = BorderRadius.circular(10);
-        c = mistyRose; // Couleur lorsque le volet est ouvert
+        _borderRadius = BorderRadius.circular(50);
+        c = surface_color; // Couleur lorsque le volet est ouvert
         _icon = Icons.remove;
         isMenuOpen = true;
       }
@@ -85,10 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset('plane.jpeg',
-                fit: BoxFit.cover,
-                alignment: Alignment(0, -0.4) // Aligner l'image en haut
-                ),
             Positioned(
               top: 20,
               left: 0,
@@ -97,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text(
                   "   WorldFlightInfo",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: surface_color,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Signika',
@@ -133,28 +145,28 @@ class _MyHomePageState extends State<MyHomePage> {
               InkWell(
                 onTap: toggleMenu,
                 child: AnimatedContainer(
-                  margin: const EdgeInsets.only(top: 90),
+                  margin: const EdgeInsets.only(
+                      top: 90, left: 20, right: 20, bottom: 20),
                   alignment: Alignment.center,
                   height: _height,
                   width: _width,
                   duration: const Duration(seconds: 1),
                   curve: Curves.fastOutSlowIn,
                   decoration: BoxDecoration(
-                    color: c,
-                    borderRadius: isMenuOpen
-                        ? BorderRadius.circular(20)
-                        : BorderRadius.circular(
-                            20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
+                    color: surface_color,
+                    borderRadius: BorderRadius.circular(
+                        20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                   ),
                   // Décaler le volet vers le bas de 90 pixels
-                  child: Menu(isMenuOpen: isMenuOpen),
+                  child:
+                      Menu(isMenuOpen: isMenuOpen, destinations: destinations),
                 ),
               ),
               Expanded(
                 child: Container(
                   alignment: Alignment.center,
                   height: MediaQuery.of(context).size.height,
-                  color: const Color.fromRGBO(45, 52, 54, 1.0),
+                  color: background_color,
                   child: ColoredMap(
                     currentCountry: currentCountry,
                     previousCountry: previousCountry,
@@ -173,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      backgroundColor: const Color.fromRGBO(45, 52, 54, 1.0),
+      backgroundColor: background_color,
     );
   }
 }
