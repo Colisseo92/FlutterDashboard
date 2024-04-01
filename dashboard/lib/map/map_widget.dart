@@ -49,7 +49,7 @@ class MapWidget extends StatelessWidget {
 
       callback: (id, name, tapDetails) async {
         if (id != "") {
-          await fetchAirport(id.toString());
+          //await fetchAirport(id.toString());
           await fetchCountry(id.toString());
         }
         onMapColorChange(id.toString());
