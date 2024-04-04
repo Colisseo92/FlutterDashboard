@@ -76,6 +76,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
             child: Container(
               width: MediaQuery.of(context).size.width * 0.3,
               color: Colors.transparent, //couleur du volet
+              margin:
+                  const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +85,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                   _buildCountryExpansionTile(), // Génération de la tile du pays cliqué
                   Expanded(
                     child: ListView(
-                      shrinkWrap: true,
+                      shrinkWrap: false,
                       children: airport,
                     ),
                   ),
