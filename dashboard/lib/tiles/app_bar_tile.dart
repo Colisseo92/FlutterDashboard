@@ -6,12 +6,11 @@ class AppBarTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: app_bar_height,
-      width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(
           top: 10,
           left: space_between_surface,
           right: space_between_surface,
-          bottom: 0),
+          bottom: space_between_surface),
       decoration: BoxDecoration(
         color: surface_color,
         borderRadius: BorderRadius.circular(20),
@@ -21,15 +20,17 @@ class AppBarTile extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-                padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
-                child: const Text(
-                  textAlign: TextAlign.left,
-                  "WorldFlightInfo",
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
+                child: const DefaultTextStyle(
                   style: TextStyle(
                       color: surface_text_color,
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Signika'),
+                  child: Text(
+                    textAlign: TextAlign.left,
+                    "WorldFlightInfo",
+                  ),
                 )),
           ),
           Expanded(
