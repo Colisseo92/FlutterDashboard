@@ -11,10 +11,18 @@ const Color wengeColor = Color(0xFF645352);
 const Color mistyRose = Color(0xD1CBC1FF);
 const Color rosyBrown = Color(0xBC8F8FFF);
 
+//APPLICATION COLORS
 const background_color = Color.fromRGBO(25, 25, 25, 1.0);
+const background_sruface_color = Color.fromRGBO(50, 50, 50, 1.0);
 const surface_color = Color.fromRGBO(103, 130, 94, 0.75); //couleur volet
 const card_surface = const Color.fromRGBO(117, 141, 109, 1.0); //couleur bouton
 const text_color = Colors.black;
+
+const surface_text_color = Colors.white;
+
+//APPLICATION SIZES
+const double app_bar_height = 60;
+const double space_between_surface = 20;
 
 class CustomColors {
   static const Map<int, Color> _pinkSwatch = {
