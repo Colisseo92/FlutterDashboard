@@ -20,8 +20,16 @@ const text_color = Colors.black;
 
 const surface_text_color = Colors.white;
 
+//LEGEND COLORS
+const Color legend_highest_color = Color.fromRGBO(46, 204, 113, 1.0);
+const Color legend_middle_color = Color.fromRGBO(39, 174, 96, 1.0);
+const Color legend_lowest_color = Color.fromRGBO(22, 160, 133, 1.0);
+//ANIMATION DURATION
+const Duration animation_duration = Duration(milliseconds: 500);
+const Curve animation_curve = Curves.easeInSine;
 //APPLICATION SIZES
 const double app_bar_height = 60;
+const double legend_bar_height = 80;
 const double space_between_surface = 20;
 
 class CustomColors {

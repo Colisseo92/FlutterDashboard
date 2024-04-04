@@ -1,5 +1,6 @@
 import 'package:dashboard/requests/destination.dart';
 import 'package:dashboard/requests/result.dart';
+import 'package:dashboard/tiles/legend_tile.dart';
 import 'package:dashboard/type/destination_country.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/menu/menu_widget.dart';
@@ -39,12 +40,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //ANIMATED MENU VARS
   double _width = 0; // Taille plus petite pour le bouton
-  double _height = 0; // Taille plus petite pour le bouton
+  double _menu_height = 0; // Taille plus petite pour le bouton
   double _right_margin = 0;
   Color c = mistyRose; // Couleur pour le bouton
 
   //ANIMATED LEGEND VARS
-  double _legend_width = 0;
   double _legend_height = 0;
   double _legend_margin = 0;
 
@@ -68,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _map_width =
-            MediaQuery.of(context).size.width - (2 * space_between_surface);
         _map_height = MediaQuery.of(context).size.height -
             (app_bar_height +
+                2 * 10 +
                 2 * space_between_surface +
-                _legend_height +
-                2 * _legend_margin);
+                _legend_height);
+        _menu_height = MediaQuery.of(context).size.height -
+            (app_bar_height + 2 * 10 + 2 * space_between_surface);
       });
     });
   }
@@ -105,40 +105,37 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (isMenuOpen) {
         _width = 0; // Retour à la taille initiale
-        _height = MediaQuery.of(context).size.height -
-            (app_bar_height + 40); // Taille de l'écran
         _borderRadius = BorderRadius.circular(50); // Forme légèrement carrée
         c = surface_color; //Couleur
         _icon = Icons.add;
         isMenuOpen = false;
         _right_margin = 0;
+
+        _legend_margin = 0;
         //MODIFICATION VARIABLE MAP
-        _map_width =
-            MediaQuery.of(context).size.width - (2 * space_between_surface);
+        _legend_height = 0;
         _map_height = MediaQuery.of(context).size.height -
             (app_bar_height +
+                2 * 10 +
                 2 * space_between_surface +
-                _legend_height +
-                2 * _legend_margin);
+                _legend_margin);
       } else {
         _width = MediaQuery.of(context).size.width *
             0.2; // Nouvelle largeur du volet
-        _height = MediaQuery.of(context).size.height -
-            (app_bar_height + 40); // Taille de l'écran
         _borderRadius = BorderRadius.circular(50);
         c = surface_color; // Couleur lorsque le volet est ouvert
         _icon = Icons.remove;
         _right_margin = 20;
+
+        _legend_margin = space_between_surface;
         //MODIFICATION VARS MAP
-        print(_width);
-        _map_width = MediaQuery.of(context).size.width -
-            (2 * _right_margin + _width + space_between_surface);
-        print(_map_width);
+        _legend_height = legend_bar_height;
         _map_height = MediaQuery.of(context).size.height -
             (app_bar_height +
-                2 * space_between_surface +
-                _legend_height +
-                2 * _legend_margin);
+                2 * 10 +
+                space_between_surface +
+                legend_bar_height +
+                _legend_margin);
         //
         isMenuOpen = true;
       }
@@ -148,41 +145,47 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Expanded(
+      child: Container(
+        decoration: const BoxDecoration(
+          color: background_color,
+        ),
         child: Column(
           children: [
-            Expanded(child: AppBarTile()),
-            Row(
-              children: <Widget>[
-                AnimatedContainer(
-                  margin: EdgeInsets.only(
-                      top: 20, left: 20, right: _right_margin, bottom: 20),
-                  alignment: Alignment.center,
-                  height: _height,
-                  width: _width,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.fastOutSlowIn,
-                  decoration: BoxDecoration(
-                    color: surface_color,
-                    borderRadius: BorderRadius.circular(
-                        20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
+            AppBarTile(),
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  AnimatedContainer(
+                    margin: EdgeInsets.only(
+                        left: 20, right: _right_margin, bottom: 30),
+                    alignment: Alignment.center,
+                    height: _menu_height,
+                    width: _width,
+                    duration: animation_duration,
+                    curve: animation_curve,
+                    decoration: BoxDecoration(
+                      color: surface_color,
+                      borderRadius: BorderRadius.circular(
+                          20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
+                    ),
+                    // Décaler le volet vers le bas de 90 pixels
+                    child: Menu(
+                        isMenuOpen: isMenuOpen, destinations: destinations),
                   ),
-                  // Décaler le volet vers le bas de 90 pixels
-                  child:
-                      Menu(isMenuOpen: isMenuOpen, destinations: destinations),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      SafeArea(
-                        child: AnimatedContainer(
-                          duration: const Duration(seconds: 1),
+                  Expanded(
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        AnimatedContainer(
+                          duration: animation_duration,
+                          curve: animation_curve,
                           alignment: Alignment.topRight,
+                          padding: const EdgeInsets.only(bottom: 10),
+                          margin: EdgeInsets.only(
+                              left: 0, right: 20, bottom: _legend_margin),
                           height: _map_height,
-                          width: _map_width,
-                          padding: const EdgeInsets.only(top: 10, bottom: 10),
-                          margin: const EdgeInsets.only(
-                              top: 20, left: 0, right: 20, bottom: 20),
+                          width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             color: background_sruface_color,
                             borderRadius: BorderRadius.circular(
@@ -201,31 +204,25 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                      ),
-                      SafeArea(
-                        child: AnimatedContainer(
-                          //Related to animation
-                          curve: Curves.easeInOut,
-                          duration: const Duration(milliseconds: 500),
-
-                          //Related to container
-                          height: _legend_height,
-                          width: _legend_width,
-                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                        AnimatedContainer(
+                          duration: animation_duration,
+                          curve: animation_curve,
+                          alignment: Alignment.topRight,
                           margin: const EdgeInsets.only(
-                              top: 0, left: 0, right: 20, bottom: 0),
+                              left: 0, right: 20, bottom: 0),
+                          height: _legend_height,
                           decoration: BoxDecoration(
                             color: background_sruface_color,
                             borderRadius: BorderRadius.circular(
                                 20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                           ),
-                          child: Text('Test text'),
-                        ),
-                      )
-                    ],
+                          child: LegendTile(),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
