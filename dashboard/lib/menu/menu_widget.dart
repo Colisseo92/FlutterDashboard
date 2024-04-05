@@ -10,7 +10,7 @@ import '../type/destination_country.dart';
 import 'destination_country_card.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({Key? key, required this.isMenuOpen}) : super(key: key);
+  const Menu({Key? key, required this.isMenuOpen, required this.destinations}) : super(key: key);
 
   final bool isMenuOpen;
   final List<DestinationCountry> destinations;
