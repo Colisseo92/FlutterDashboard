@@ -173,6 +173,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
             null; // Déselectionner si la même option est sélectionnée
       } else {
         _selectedCountry = value; // Sélectionner la nouvelle option
+        print(value);
       }
     });
   }

@@ -226,7 +226,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             borderRadius: BorderRadius.circular(
                                 20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                           ),
-                          child: LegendTile(),
+                          child: LegendTile(
+                            frequence: destination_frequency,
+                          ),
                         )
                       ],
                     ),
