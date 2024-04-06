@@ -15,25 +15,42 @@ import 'package:dashboard/requests/result.dart';
 typedef MapColorCallback = void Function(String countryId);
 
 class MapWidget extends StatelessWidget {
-  const MapWidget({super.key, required this.onMapColorChange});
+  const MapWidget(
+      {super.key,
+      required this.onMapColorChange,
+      required this.current_country_frequency});
 
+  final Map<String, dynamic> current_country_frequency;
   final MapColorCallback
       onMapColorChange; //fonction utilisé pour changer le pays actuel et ancien pays coloré
 
   //Fonction qui permet de changer le pays coloré
   Map<String, Color> getMapOfColoredCountry(BuildContext context) {
+    colorCountries(country_empty_color);
     if (ColoredMap.of(context)!.currentCountry != "") {
       //Si le pays qui doit être colorié n'est pas nul ou une chaine vide
       getCountriesColor()[ColoredMap.of(context)!.currentCountry] =
-          countryFullColor; //Changer la valeur de sa couleur dans la Map qui gère la couleur des pays
+          country_selected_color; //Changer la valeur de sa couleur dans la Map qui gère la couleur des pays
     }
     if (ColoredMap.of(context)!.previousCountry != "") {
       //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
       getCountriesColor()[ColoredMap.of(context)!.previousCountry] =
-          countryEmptyColor;
+          country_empty_color;
     }
-    for (final country in getCountries()) {
-      getCountriesColor()[country] = const Color.fromRGBO(232, 255, 175, 1.0);
+    if (current_country_frequency.isNotEmpty) {
+      int frequency = (current_country_frequency['max_frequency'] / 3).toInt();
+      for (final country in current_country_frequency['destinations']) {
+        if (country.frequence >= 0 && country.frequence <= frequency) {
+          getCountriesColor()[country.iso] = legend_lowest_color;
+        } else if (country.frequence > frequency &&
+            country.frequence <= 2 * frequency) {
+          getCountriesColor()[country.iso] = legend_middle_color;
+        } else {
+          getCountriesColor()[country.iso] = legend_highest_color;
+        }
+      }
+    } else {
+      print("COuntry not Selected");
     }
     return getCountriesColor();
   }
@@ -50,7 +67,7 @@ class MapWidget extends StatelessWidget {
       callback: (id, name, tapDetails) async {
         if (id != "") {
           //await fetchAirport(id.toString());
-          await fetchCountry(id.toString());
+          await fetchCountries(id.toString());
         }
         onMapColorChange(id.toString());
       }, //calback

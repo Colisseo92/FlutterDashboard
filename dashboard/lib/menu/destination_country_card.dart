@@ -5,7 +5,7 @@ import '../config.dart';
 import 'travel_details_dialog.dart';
 
 class DestinationCountryCard extends StatelessWidget {
-  final DestinationCountry country;
+  final Country country;
 
   const DestinationCountryCard({
     required this.country,

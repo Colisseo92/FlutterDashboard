@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 const String dashboardTitle = "Do you want to go somewhere else ?";
 
-const countryEmptyColor = Colors.grey;
-const countryFullColor = Colors.deepPurple;
 const mapBackgroundColor = Colors.black;
 const Color rosePastel =
     Color(0xFFFFC0CB); // Rose pastel défini par un code hexadécimal
@@ -20,6 +18,9 @@ const text_color = Colors.black;
 
 const surface_text_color = Colors.white;
 
+//MAP COLORS
+const Color country_empty_color = Colors.grey;
+const Color country_selected_color = Colors.purple;
 //LEGEND COLORS
 const Color legend_highest_color = Color.fromRGBO(46, 204, 113, 1.0);
 const Color legend_middle_color = Color.fromRGBO(39, 174, 96, 1.0);
