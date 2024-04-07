@@ -101,6 +101,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
       title: Text(title),
       value: title,
       groupValue: _selectedCountry,
+      toggleable: true,
       onChanged: _onRadioListTileSelected,
     );
   }
