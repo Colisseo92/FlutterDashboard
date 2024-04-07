@@ -10,11 +10,16 @@ import '../type/destination_country.dart';
 import 'destination_country_card.dart';
 
 class Menu extends StatefulWidget {
-  const Menu({Key? key, required this.isMenuOpen, required this.destinations})
+  const Menu(
+      {Key? key,
+      required this.isMenuOpen,
+      required this.destinations,
+      required this.currentCountry})
       : super(key: key);
 
   final bool isMenuOpen;
-  final List<DestinationCountry> destinations;
+  final List<Country> destinations;
+  final List<Country> currentCountry;
   //double _sliderValue = 0.0; // Variable pour stocker la valeur sélectionnée du slider
 
   @override
@@ -64,7 +69,6 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //faire un map à la place
     List<Widget> airport = widget.destinations
         .map((country) => DestinationCountryCard(country: country))
         .toList();
@@ -126,13 +130,15 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                 : BorderRadius.circular(
                     0), // Bordure de la tuile réduite // Bordure de la tuile ouverte
           ),
-          tilePadding: EdgeInsets.symmetric(
+          tilePadding: const EdgeInsets.symmetric(
               horizontal: 16.0), // Espacement interne de la ExpansionTile
           leading: CircleAvatar(
-            backgroundImage: AssetImage('flags/th.jpg'),
+            backgroundImage: AssetImage(
+                'flags/${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.iso!.toLowerCase() : "fr"}.jpg'),
             radius: 15,
           ),
-          title: Text('Départ : Pays'),
+          title: Text(
+              'Départ : ${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.getCountryName() : ""}'),
           onExpansionChanged: (expanded) {
             setState(() {
               _showCountryOptions = expanded;
@@ -143,12 +149,17 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                 ? Icons.keyboard_arrow_up
                 : Icons.keyboard_arrow_down,
           ),
+          /*
+          List<Widget> airport = widget.destinations
+        .map((country) => DestinationCountryCard(country: country))
+        .toList();
+           */
           children: _showCountryOptions
-              ? [
-                  _buildRadioListTile('Aeroport 1'),
-                  _buildRadioListTile('Aeroport 2'),
-                  _buildRadioListTile('Aeroport 3'),
-                ]
+              ? (widget.currentCountry.isNotEmpty
+                  ? widget.currentCountry.first.airports!
+                      .map((airport) => _buildRadioListTile(airport.iata_code!))
+                      .toList()
+                  : [])
               : [],
         ),
       ),
