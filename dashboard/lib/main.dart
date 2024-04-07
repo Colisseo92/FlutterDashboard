@@ -54,8 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _map_height = 0;
 
   BorderRadiusGeometry _borderRadius =
-      BorderRadius.circular(20); // Forme légèrement carrée
-  IconData _icon = Icons.add; // Icône de +
+  BorderRadius.circular(20); // Forme légèrement carrée
 
   bool isMenuOpen = false;
 
@@ -67,15 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String previousCountry = "";
   String currentCountryName = "";
 
+
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height +
-                2 * 10 +
-                2 * space_between_surface +
-                _legend_height);
+            (app_bar_height + 2 * 10 + 2 * space_between_surface +_legend_height);
         _menu_height = MediaQuery.of(context).size.height -
             (app_bar_height + 2 * 10 + 2 * space_between_surface);
       });
@@ -105,14 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
-
   void toggleMenu() {
     setState(() {
       if (isMenuOpen) {
         _width = 0; // Retour à la taille initiale
         _borderRadius = BorderRadius.circular(50); // Forme légèrement carrée
         c = surface_color; //Couleur
-        _icon = Icons.add;
+        //_icon = Icons.add;
         isMenuOpen = false;
         _right_margin = 0;
 
@@ -129,23 +125,20 @@ class _MyHomePageState extends State<MyHomePage> {
             0.2; // Nouvelle largeur du volet
         _borderRadius = BorderRadius.circular(50);
         c = surface_color; // Couleur lorsque le volet est ouvert
-        _icon = Icons.remove;
+        //_icon = Icons.remove;
         _right_margin = 20;
 
         _legend_margin = space_between_surface;
         //MODIFICATION VARS MAP
         _legend_height = legend_bar_height;
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height +
-                2 * 10 +
-                space_between_surface +
-                legend_bar_height +
-                _legend_margin);
-        //
+            (app_bar_height + 2 * 10 + space_between_surface
+                + legend_bar_height + _legend_margin);
         isMenuOpen = true;
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +148,10 @@ class _MyHomePageState extends State<MyHomePage> {
           color: background_color,
         ),
         child: Column(
-          children: [
-            AppBarTile(),
+         children: [
+            AppBarTile(
+              onCountrySelected: onColorChange,
+            ),
             Expanded(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
