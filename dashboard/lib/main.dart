@@ -82,6 +82,24 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void onUpdateDestination(String iso, String? iata) async {
+    List<Country> _destinations = [];
+    if (iso != "") {
+      if (iata != null) {
+        _destinations = await getDestinationCountryWithFilter(
+            iso.toString(), iata.toString());
+      }
+    }
+    setState(() {
+      if (iso != "") {
+        if (iata != null) {
+          destinations = _destinations;
+          print('Destinations updated');
+        }
+      }
+    });
+  }
+
   void onColorChange(String id) async {
     List<Country> _destinations = [];
     List<Country> _country = [];
@@ -179,6 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       isMenuOpen: isMenuOpen,
                       destinations: destinations,
                       currentCountry: country,
+                      destinationUpdateFunction: onUpdateDestination,
+                      currentIso: currentCountry,
                     ),
                   ),
                   Expanded(

@@ -9,15 +9,21 @@ import 'package:dashboard/config.dart';
 import '../type/destination_country.dart';
 import 'destination_country_card.dart';
 
+typedef DestinationCallback = void Function(String iso, String? iata);
+
 class Menu extends StatefulWidget {
   const Menu(
       {Key? key,
       required this.isMenuOpen,
       required this.destinations,
-      required this.currentCountry})
+      required this.currentCountry,
+      required this.destinationUpdateFunction,
+      required this.currentIso})
       : super(key: key);
 
   final bool isMenuOpen;
+  final String currentIso;
+  final DestinationCallback destinationUpdateFunction;
   final List<Country> destinations;
   final List<Country> currentCountry;
   //double _sliderValue = 0.0; // Variable pour stocker la valeur sélectionnée du slider
@@ -173,7 +179,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
             null; // Déselectionner si la même option est sélectionnée
       } else {
         _selectedCountry = value; // Sélectionner la nouvelle option
-        print(value);
+        widget.destinationUpdateFunction(widget.currentIso, value);
       }
     });
   }

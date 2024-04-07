@@ -40,7 +40,7 @@ class _LegendTile extends State<LegendTile> {
                           borderRadius: BorderRadius.circular(5)),
                     ),
                     DefaultTextStyle(
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: surface_text_color,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

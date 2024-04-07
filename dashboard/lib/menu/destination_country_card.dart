@@ -12,14 +12,15 @@ class DestinationCountryCard extends StatelessWidget {
     super.key,
   });
 
-  Widget _buildCityExpansionTile(BuildContext context, String city) {
+  Widget _buildCityExpansionTile(
+      BuildContext context, String? city, String iata) {
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      title: Text(city),
+      title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
       onTap: () {
-        travelDetailsDialog(context, city);
+        travelDetailsDialog(context, city!);
       },
     );
   }
@@ -52,7 +53,8 @@ class DestinationCountryCard extends StatelessWidget {
         title: Text(getCountryWithIso(country.iso!.toLowerCase())!),
         subtitle: Text("${country.airports!.length} aéroports"),
         children: country.airports!
-            .map((city) => _buildCityExpansionTile(context, city.iata_code!))
+            .map((city) =>
+                _buildCityExpansionTile(context, city.city, city.iata_code!))
             .toList(),
       ),
     );

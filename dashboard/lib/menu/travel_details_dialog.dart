@@ -7,6 +7,8 @@ void travelDetailsDialog(BuildContext context, String city) {
     barrierDismissible: true,
     builder: (context) {
       return AlertDialog(
+        backgroundColor: Colors.pink,
+        insetPadding: EdgeInsets.all(10),
         title: Text('Détails du trajet de xxx à $city'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
