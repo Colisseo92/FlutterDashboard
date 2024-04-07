@@ -1,3 +1,4 @@
+import 'package:dashboard/map/country_color_util.dart';
 import 'package:dashboard/requests/destination.dart';
 import 'package:dashboard/requests/result.dart';
 import 'package:dashboard/tiles/legend_tile.dart';
@@ -57,7 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool isMenuOpen = false;
 
-  List<DestinationCountry> destinations = [];
+  List<Country> destinations = [];
+  Map<String, dynamic> destination_frequency = {};
+  List<Country> country = [];
 
   String currentCountry = "";
   String previousCountry = "";
@@ -77,25 +80,27 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void onColorChange(String id) async {
-    List<DestinationCountry> _destinations = [];
+    List<Country> _destinations = [];
+    List<Country> _country = [];
     if (id != "") {
       _destinations = await getDestinationCountry(id.toString());
+      _country = await getCurrentCountryInfo(id.toString());
+      destination_frequency = await getDestinationFrequency(id.toString());
     }
     setState(() {
-      previousCountry = currentCountry;
-      currentCountry = id;
-      currentCountryName = getCountryWithIso(id)!;
+      if (id != "") {
+        previousCountry = currentCountry;
+        currentCountry = id;
+        currentCountryName = getCountryWithIso(id)!;
+      }
       if (id.toString() != "") {
         destinations = _destinations;
+        country = _country;
       }
       if (id == "") {
         toggleMenu();
       }
     });
-    for (final e in destinations) {
-      print(e.iso);
-      e.displayAirport();
-    }
   }
   void toggleMenu() {
     setState(() {
@@ -166,7 +171,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     // Décaler le volet vers le bas de 90 pixels
                     child: Menu(
-                        isMenuOpen: isMenuOpen, destinations: destinations),
+                      isMenuOpen: isMenuOpen,
+                      destinations: destinations,
+                      currentCountry: country,
+                    ),
                   ),
                   Expanded(
                     child: Column(
@@ -195,6 +203,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: MapWidget(
                                 key: UniqueKey(),
                                 onMapColorChange: onColorChange,
+                                current_country_frequency:
+                                    destination_frequency,
                               ),
                             ),
                           ),
