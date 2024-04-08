@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _map_height = 0;
 
   BorderRadiusGeometry _borderRadius =
-  BorderRadius.circular(20); // Forme légèrement carrée
+      BorderRadius.circular(20); // Forme légèrement carrée
 
   bool isMenuOpen = false;
 
@@ -66,13 +66,15 @@ class _MyHomePageState extends State<MyHomePage> {
   String previousCountry = "";
   String currentCountryName = "";
 
-
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height + 2 * 10 + 2 * space_between_surface +_legend_height);
+            (app_bar_height +
+                2 * 10 +
+                2 * space_between_surface +
+                _legend_height);
         _menu_height = MediaQuery.of(context).size.height -
             (app_bar_height + 2 * 10 + 2 * space_between_surface);
       });
@@ -102,6 +104,24 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
+
+  void onUpdateDestination(String iso, String? iata) async {
+    List<Country> _destinations = [];
+    if (iso != "") {
+      if (iata != null) {
+        _destinations = await getDestinationCountryWithFilter(
+            iso.toString(), iata.toString());
+      } else {
+        _destinations = await getDestinationCountry(iso.toString());
+      }
+    }
+    setState(() {
+      if (iso != "") {
+        destinations = _destinations;
+      }
+    });
+  }
+
   void toggleMenu() {
     setState(() {
       if (isMenuOpen) {
@@ -132,13 +152,15 @@ class _MyHomePageState extends State<MyHomePage> {
         //MODIFICATION VARS MAP
         _legend_height = legend_bar_height;
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height + 2 * 10 + space_between_surface
-                + legend_bar_height + _legend_margin);
+            (app_bar_height +
+                2 * 10 +
+                space_between_surface +
+                legend_bar_height +
+                _legend_margin);
         isMenuOpen = true;
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: background_color,
         ),
         child: Column(
-         children: [
+          children: [
             AppBarTile(
               onCountrySelected: onColorChange,
             ),
@@ -174,6 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       isMenuOpen: isMenuOpen,
                       destinations: destinations,
                       currentCountry: country,
+                      destinationUpdateFunction: onUpdateDestination,
+                      currentIso: currentCountry,
                     ),
                   ),
                   Expanded(
@@ -221,7 +245,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             borderRadius: BorderRadius.circular(
                                 20), // Arrondir les coins du volet si ouvert, sinon pas d'arrondi
                           ),
-                          child: LegendTile(),
+                          child: LegendTile(
+                            frequence: destination_frequency,
+                          ),
                         )
                       ],
                     ),

@@ -1,29 +1,26 @@
+import 'package:dashboard/type/search_country.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/config.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 
-class Country {
-  final String iso;
-  final String name;
-
-  Country({required this.iso, required this.name});
-}
-
 class AppBarTile extends StatefulWidget {
   final Function(String) onCountrySelected;
 
-  const AppBarTile({Key? key, required this.onCountrySelected}) : super(key: key);
+  const AppBarTile({Key? key, required this.onCountrySelected})
+      : super(key: key);
 
   @override
   _AppBarTileState createState() => _AppBarTileState();
 }
+
 class _AppBarTileState extends State<AppBarTile> {
-  List<Country> countries = countryIso.entries
-      .map((entry) => Country(iso: entry.key, name: entry.value))
+  List<SearchCountry> countries = countryIso.entries
+      .map((entry) => SearchCountry(iso: entry.key, name: entry.value))
       .toList();
 
   String? _selectedCountry;
-  bool _isDropdownVisible = false; // Ajoutez ce booléen pour suivre l'état de visibilité de la liste déroulante
+  bool _isDropdownVisible =
+      false; // Ajoutez ce booléen pour suivre l'état de visibilité de la liste déroulante
 
   void _toggleDropdownVisibility() {
     setState(() {
@@ -42,6 +39,7 @@ class _AppBarTileState extends State<AppBarTile> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
         height: app_bar_height,
         margin: const EdgeInsets.only(
@@ -59,7 +57,8 @@ class _AppBarTileState extends State<AppBarTile> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: const DefaultTextStyle(
                   style: TextStyle(
                     color: surface_text_color,
@@ -79,37 +78,52 @@ class _AppBarTileState extends State<AppBarTile> {
               child: Container(
                 margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
                 alignment: Alignment.centerRight,
-                child: _isDropdownVisible ? Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40), // Arrondir les angles avec un rayon de 40
-                    color: Colors.black.withOpacity(0.15), // Changer la couleur de fond du DropdownButton
-                  ),
-                  child: DropdownButton<String>(
-                    hint: Text('      ---------------- Choisir un pays ----------------', style: TextStyle(color: Colors.white)),
-                    value: _selectedCountry,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedCountry = newValue;
-                      });
-                      _selectCountry(newValue);
-                    },
-                    items: countries.map<DropdownMenuItem<String>>((Country country) {
-                      return DropdownMenuItem<String>(
-                        value: country.iso,
-                        child: Text('      ' + country.name),
-                      );
-                    }).toList(),
+                child: _isDropdownVisible
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              40), // Arrondir les angles avec un rayon de 40
+                          color: Colors.black.withOpacity(
+                              0.15), // Changer la couleur de fond du DropdownButton
+                        ),
+                        child: DropdownButton<String>(
+                          hint: Text(
+                              '      ---------------- Choisir un pays ----------------',
+                              style: TextStyle(color: Colors.white)),
+                          value: _selectedCountry,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedCountry = newValue;
+                            });
+                            _selectCountry(newValue);
+                          },
+                          items: countries.map<DropdownMenuItem<String>>(
+                              (SearchCountry country) {
+                            return DropdownMenuItem<String>(
+                              value: country.iso,
+                              child: Text('      ' + country.name),
+                            );
+                          }).toList(),
 
-                    icon: Icon(Icons.arrow_drop_down), // Changement de l'icône de dropdown
-                    iconEnabledColor: Colors.black, // Couleur de l'icône lorsque le dropdown est activé
-                    iconDisabledColor: Colors.grey, // Couleur de l'icône lorsque le dropdown est désactivé
-                    elevation: 3, // Élévation du dropdown
-                    style: TextStyle(color: Colors.white), // Style du texte dans le dropdown
-                    dropdownColor: background_color, // Couleur de fond du dropdown
-                    underline: Container(), // Enlever la ligne sous le dropdown
-                    //isExpanded: false, // Permettre au dropdown de s'étendre pour occuper toute la largeur
-                  ),
-                ) : SizedBox.shrink(), // Cache le DropdownButton si _isDropdownVisible est faux
+                          icon: Icon(Icons
+                              .arrow_drop_down), // Changement de l'icône de dropdown
+                          iconEnabledColor: Colors
+                              .black, // Couleur de l'icône lorsque le dropdown est activé
+                          iconDisabledColor: Colors
+                              .grey, // Couleur de l'icône lorsque le dropdown est désactivé
+                          elevation: 3, // Élévation du dropdown
+                          style: TextStyle(
+                              color: Colors
+                                  .white), // Style du texte dans le dropdown
+                          dropdownColor:
+                              background_color, // Couleur de fond du dropdown
+                          underline:
+                              Container(), // Enlever la ligne sous le dropdown
+                          //isExpanded: false, // Permettre au dropdown de s'étendre pour occuper toute la largeur
+                        ),
+                      )
+                    : SizedBox
+                        .shrink(), // Cache le DropdownButton si _isDropdownVisible est faux
               ),
             ),
             SizedBox(width: 20),

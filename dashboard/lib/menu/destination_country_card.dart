@@ -2,13 +2,16 @@ import 'package:dashboard/map/country_iso_util.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/type/destination_country.dart';
 import '../config.dart';
+import '../popup/airport_not_selected.dart';
 import 'travel_details_dialog.dart';
 
 class DestinationCountryCard extends StatelessWidget {
   final Country country;
+  final String? selected_country;
 
   const DestinationCountryCard({
     required this.country,
+    required this.selected_country,
     super.key,
   });
 
@@ -19,7 +22,11 @@ class DestinationCountryCard extends StatelessWidget {
       ),
       title: Text(city),
       onTap: () {
-        travelDetailsDialog(context, city);
+        if (selected_country == null) {
+          AirportNotSelectedPopup(context);
+        } else {
+          travelDetailsDialog(context, city, selected_country!);
+        }
       },
     );
   }

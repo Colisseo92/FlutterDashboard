@@ -18,6 +18,11 @@ Future<List<Country>> getDestinationCountry(iso) async {
   return json.map((x) => Country.fromJson(x)).toList();
 }
 
+Future<List<Country>> getDestinationCountryWithFilter(iso, iata) async {
+  List<dynamic> json = await fetchDestinationWithFilter(iso, iata);
+  return json.map((x) => Country.fromJson(x)).toList();
+}
+
 Future<List<Country>> getCurrentCountryInfo(iso) async {
   List<dynamic> json = await fetchCountryInfo(iso);
   return json.map((x) => Country.fromJson(x)).toList();
