@@ -2,10 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/config.dart';
 
-class LegendTile extends StatelessWidget {
+class LegendTile extends StatefulWidget {
+  const LegendTile({
+    Key? key,
+    required this.frequence,
+  }) : super(key: key);
+
+  final Map<String, dynamic> frequence;
+  //double _sliderValue = 0.0; // Variable pour stocker la valeur sélectionnée du slider
+
+  @override
+  _LegendTile createState() => _LegendTile();
+}
+
+class _LegendTile extends State<LegendTile> {
+  int frequency = -1;
+
   Widget build(BuildContext context) {
+    frequency = widget.frequence.isNotEmpty
+        ? (widget.frequence['max_frequency'] / 3).toInt()
+        : -1;
     return Container(
-        padding: EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 20),
+        padding:
+            const EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 20),
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
@@ -21,15 +40,17 @@ class LegendTile extends StatelessWidget {
                           color: legend_highest_color,
                           borderRadius: BorderRadius.circular(5)),
                     ),
-                    const DefaultTextStyle(
-                      style: TextStyle(
+                    DefaultTextStyle(
+                      style: const TextStyle(
                           color: surface_text_color,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Signika'),
                       child: Text(
                         textAlign: TextAlign.left,
-                        "30-20 vols",
+                        frequency == -1
+                            ? "---"
+                            : "+ ${frequency * 2} vols / semaine",
                       ),
                     )
                   ],
@@ -46,15 +67,17 @@ class LegendTile extends StatelessWidget {
                           color: legend_middle_color,
                           borderRadius: BorderRadius.circular(5)),
                     ),
-                    const DefaultTextStyle(
-                      style: TextStyle(
+                    DefaultTextStyle(
+                      style: const TextStyle(
                           color: surface_text_color,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Signika'),
                       child: Text(
                         textAlign: TextAlign.left,
-                        "20-10 vols",
+                        frequency == -1
+                            ? "---"
+                            : "${frequency}-${frequency * 2} vols / semaine",
                       ),
                     )
                   ],
@@ -71,15 +94,17 @@ class LegendTile extends StatelessWidget {
                           color: legend_lowest_color,
                           borderRadius: BorderRadius.circular(5)),
                     ),
-                    const DefaultTextStyle(
-                      style: TextStyle(
+                    DefaultTextStyle(
+                      style: const TextStyle(
                           color: surface_text_color,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Signika'),
                       child: Text(
                         textAlign: TextAlign.left,
-                        "10-0 vols",
+                        frequency == -1
+                            ? "---"
+                            : "0-${frequency} vols / semaine",
                       ),
                     )
                   ],
