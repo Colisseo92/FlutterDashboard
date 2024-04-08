@@ -1,3 +1,6 @@
+#TEAM PROJECT
+Flavio Andornetti, Véronique de Villeneuve, Thibaut Gosselin
+
 # dashboard
 
 A new Flutter project.
