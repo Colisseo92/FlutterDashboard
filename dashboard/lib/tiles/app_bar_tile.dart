@@ -61,7 +61,7 @@ class _AppBarTileState extends State<AppBarTile> {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 child: const DefaultTextStyle(
                   style: TextStyle(
-                    color: surface_text_color,
+                    color: legend_highest_color2,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Signika',
@@ -89,7 +89,7 @@ class _AppBarTileState extends State<AppBarTile> {
                         child: DropdownButton<String>(
                           hint: Text(
                               '      ---------------- Choisir un pays ----------------',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(color: Colors.black)),
                           value: _selectedCountry,
                           onChanged: (String? newValue) {
                             setState(() {
@@ -116,7 +116,7 @@ class _AppBarTileState extends State<AppBarTile> {
                               color: Colors
                                   .white), // Style du texte dans le dropdown
                           dropdownColor:
-                              background_color, // Couleur de fond du dropdown
+                              background_color2, // Couleur de fond du dropdown
                           underline:
                               Container(), // Enlever la ligne sous le dropdown
                           //isExpanded: false, // Permettre au dropdown de s'étendre pour occuper toute la largeur
@@ -131,8 +131,9 @@ class _AppBarTileState extends State<AppBarTile> {
               onPressed: () {
                 _toggleDropdownVisibility();
               },
-              icon: const Icon(Icons.search),
+              icon: const Icon(Icons.search, color: Colors.black),
             ),
+            SizedBox(width: 20),
           ],
         ),
       ),
