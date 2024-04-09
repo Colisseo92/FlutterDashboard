@@ -1,4 +1,6 @@
 import 'package:dashboard/map/country_iso_util.dart';
+import 'package:dashboard/requests/result.dart';
+import 'package:dashboard/type/travel.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/type/destination_country.dart';
 import '../config.dart';
@@ -21,11 +23,12 @@ class DestinationCountryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(30.0),
       ),
       title: Text(city),
-      onTap: () {
+      onTap: () async {
+        Travel travel = await getTravelInfo(selected_country!, city);
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {
-          travelDetailsDialog(context, city, selected_country!);
+          travelDetailsDialog(context, travel);
         }
       },
     );
@@ -40,7 +43,7 @@ class DestinationCountryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: ExpansionTile(
-        backgroundColor: card_surface, // Couleur de fond de la tuile
+        backgroundColor: Colors.white, // Couleur de fond de la tuile
         //iconColor: Colors.black, // Couleur de l'icône lorsque la tuile est ouverte
         textColor: text_color, // Couleur du texte
         //collapsedTextColor: Colors.black, // Couleur du texte lorsque la tuile est réduite

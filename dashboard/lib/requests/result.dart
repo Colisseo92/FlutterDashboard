@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:dashboard/requests/card_infos.dart';
 import 'package:dashboard/requests/countries.dart';
 import 'package:dashboard/requests/destination.dart';
 import 'package:dashboard/type/destination_country.dart';
 import 'package:dashboard/type/country_frequency.dart';
+
+import '../type/travel.dart';
 
 getApiData() {
   return json.decode(apiDatas['answer']!);
@@ -21,6 +24,11 @@ Future<List<Country>> getDestinationCountry(iso) async {
 Future<List<Country>> getDestinationCountryWithFilter(iso, iata) async {
   List<dynamic> json = await fetchDestinationWithFilter(iso, iata);
   return json.map((x) => Country.fromJson(x)).toList();
+}
+
+Future<Travel> getTravelInfo(from, to) async {
+  List<dynamic> json = await fetchCardINfos(from, to);
+  return json.map((x) => Travel.fromJson(x)).toList().first;
 }
 
 Future<List<Country>> getCurrentCountryInfo(iso) async {

@@ -1,22 +1,35 @@
 import 'package:dashboard/config.dart';
+import 'package:dashboard/requests/result.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:collection/collection.dart';
 
-void travelDetailsDialog(BuildContext context, String city, String from) {
+import '../requests/card_infos.dart';
+import '../type/travel.dart';
+
+List<FlSpot> getListPrices(List<dynamic>? liste) {
+  List<FlSpot> returned = [];
+  for (int i = 0; i < liste!.length; i++) {
+    returned.add(FlSpot(i + 1, liste[i]));
+  }
+  return returned;
+}
+
+void travelDetailsDialog(BuildContext context, Travel travel) {
   showDialog(
     context: context,
     barrierDismissible: true,
     builder: (context) {
       return AlertDialog(
-        title: Text('Détails du trajet de $from à $city'),
-        backgroundColor: background_sruface_color,
+        title: Text('Détails du trajet de ${travel.from} à ${travel.to}'),
+        backgroundColor: Colors.white,
         content: Container(
           width: MediaQuery.of(context).size.width * 0.7,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                  'CO2 produit : beaucoup trop     Distance : 15243 kms\nTemps moyen de trajet : 12h \nPrix moyen de ce trajet : une ptite somme quand même'),
+                  'CO2 produit : beaucoup trop     Distance : ${travel.distance_km} kms\nTemps moyen de trajet : ${travel.time} \nPrix moyen de ce trajet : ${travel.mean_prices}\$'),
               SizedBox(height: 20),
               Column(
                 children: [
@@ -29,28 +42,14 @@ void travelDetailsDialog(BuildContext context, String city, String from) {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 200,
+                    height: 300,
                     child: LineChart(
                       LineChartData(
                         minY: 0,
-                        maxY: 500,
+                        maxY: 3000,
                         lineBarsData: [
                           LineChartBarData(
-                            spots: [
-                              FlSpot(1, 100),
-                              FlSpot(2, 150),
-                              FlSpot(3, 200),
-                              FlSpot(4, 50),
-                              FlSpot(5, 300),
-                              FlSpot(6, 25),
-                              FlSpot(7, 75),
-                              FlSpot(8, 420),
-                              FlSpot(9, 40),
-                              FlSpot(10, 60),
-                              FlSpot(11, 200),
-                              FlSpot(12, 100),
-                              FlSpot(13, 30),
-                            ],
+                            spots: getListPrices(travel.prices),
                             isCurved: true,
                             colors: [Colors.lightBlueAccent],
                             barWidth: 4,
@@ -102,8 +101,9 @@ void travelDetailsDialog(BuildContext context, String city, String from) {
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
+                            reservedSize: 40,
                             getTitles: (value) {
-                              if (value % 100 == 0) {
+                              if (value % 500 == 0) {
                                 return value.toInt().toString();
                               } else {
                                 return '';
