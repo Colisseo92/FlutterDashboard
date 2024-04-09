@@ -11,20 +11,23 @@ const Color rosyBrown = Color(0xBC8F8FFF);
 
 //APPLICATION COLORS
 const background_color = Color.fromRGBO(25, 25, 25, 1.0);
-const background_sruface_color = Color.fromRGBO(50, 50, 50, 1.0);
-const surface_color = Color.fromRGBO(103, 130, 94, 0.75); //couleur volet
-const card_surface = const Color.fromRGBO(117, 141, 109, 1.0); //couleur bouton
+const background_color2 = Color.fromRGBO(74, 79, 64, 1.0);
+//const background_sruface_color = Color.fromRGBO(50, 50, 50, 1.0);
+const background_sruface_color = Color.fromRGBO( 48,51,42,1.0);
+const surface_color = Color.fromRGBO(182, 230, 85,0.75); //couleur volet
+const card_surface = const Color.fromRGBO(214, 233, 186, 1.0); //couleur bouton
 const text_color = Colors.black;
 
 const surface_text_color = Colors.white;
 
 //MAP COLORS
 const Color country_empty_color = Colors.grey;
-const Color country_selected_color = Colors.purple;
+const Color country_selected_color = Color.fromRGBO(207, 60, 58, 1.0);
 //LEGEND COLORS
-const Color legend_highest_color = Color.fromRGBO(46, 204, 113, 1.0);
-const Color legend_middle_color = Color.fromRGBO(39, 174, 96, 1.0);
-const Color legend_lowest_color = Color.fromRGBO(22, 160, 133, 1.0);
+const Color legend_highest_color2 = Color.fromRGBO(40, 54, 16, 1.0);
+const Color legend_highest_color = Color.fromRGBO(85, 114, 32, 1.0);
+const Color legend_middle_color = Color.fromRGBO(145, 202, 39, 1.0);
+const Color legend_lowest_color = Color.fromRGBO(218, 251, 157, 1.0);
 //ANIMATION DURATION
 const Duration animation_duration = Duration(milliseconds: 500);
 const Curve animation_curve = Curves.easeInSine;

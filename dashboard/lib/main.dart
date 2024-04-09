@@ -8,6 +8,7 @@ import 'package:dashboard/menu/menu_widget.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 import 'package:dashboard/map/colored_map.dart';
 import 'package:dashboard/map/map_widget.dart';
+import 'package:dashboard/popup/pop_up_welcome.dart';
 import 'package:flutter/widgets.dart';
 import 'config.dart';
 
@@ -54,9 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
   double _map_height = 0;
 
   BorderRadiusGeometry _borderRadius =
-      BorderRadius.circular(20); // Forme légèrement carrée
+  BorderRadius.circular(20); // Forme légèrement carrée
 
   bool isMenuOpen = false;
+  bool _isDialogShown = false;
 
   List<Country> destinations = [];
   Map<String, dynamic> destination_frequency = {};
@@ -66,20 +68,23 @@ class _MyHomePageState extends State<MyHomePage> {
   String previousCountry = "";
   String currentCountryName = "";
 
+
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (!_isDialogShown) {
+        showWelcomeDialog(context, setState);
+      }
       setState(() {
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height +
-                2 * 10 +
-                2 * space_between_surface +
-                _legend_height);
+            (app_bar_height + 2 * 10 + 2 * space_between_surface + _legend_height);
         _menu_height = MediaQuery.of(context).size.height -
             (app_bar_height + 2 * 10 + 2 * space_between_surface);
       });
     });
   }
+
+
 
   void onColorChange(String id) async {
     List<Country> _destinations = [];
@@ -126,7 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       if (isMenuOpen) {
         _width = 0; // Retour à la taille initiale
-        _height = MediaQuery.of(context).size.height; // Taille de l'écran
         _borderRadius = BorderRadius.circular(50); // Forme légèrement carrée
         c = surface_color; //Couleur
         //_icon = Icons.add;
@@ -144,7 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         _width = MediaQuery.of(context).size.width *
             0.2; // Nouvelle largeur du volet
-        _height = MediaQuery.of(context).size.height; // Taille de l'écran
         _borderRadius = BorderRadius.circular(50);
         c = surface_color; // Couleur lorsque le volet est ouvert
         //_icon = Icons.remove;
@@ -163,8 +166,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -232,7 +233,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 key: UniqueKey(),
                                 onMapColorChange: onColorChange,
                                 current_country_frequency:
-                                    destination_frequency,
+                                destination_frequency,
                               ),
                             ),
                           ),
@@ -262,9 +263,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      backgroundColor: background_color,
     );
   }
 }
 
-//https://stackoverflow.com/questions/63233890/flutter-animatedcontainer-transform-from-righttoleft
+

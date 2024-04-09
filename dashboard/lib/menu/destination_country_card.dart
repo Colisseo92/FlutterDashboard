@@ -57,7 +57,7 @@ class DestinationCountryCard extends StatelessWidget {
           radius: 15,
         ),
         title: Text(getCountryWithIso(country.iso!.toLowerCase())!),
-        subtitle: Text("${country.airports!.length} aéroports"),
+        subtitle: Text("${country.airports!.length} aéroport(s)"),
         children: country.airports!
             .map((city) => _buildCityExpansionTile(context, city.iata_code!))
             .toList(),

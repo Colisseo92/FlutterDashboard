@@ -37,7 +37,7 @@ class _LegendTile extends State<LegendTile> {
                       height: 30,
                       margin: const EdgeInsets.only(right: 20),
                       decoration: BoxDecoration(
-                          color: legend_highest_color,
+                          color: legend_lowest_color,
                           borderRadius: BorderRadius.circular(5)),
                     ),
                     DefaultTextStyle(
@@ -50,7 +50,7 @@ class _LegendTile extends State<LegendTile> {
                         textAlign: TextAlign.left,
                         frequency == -1
                             ? "---"
-                            : "+ ${frequency * 2} vols / semaine",
+                            : "0-${frequency} vols / semaine",
                       ),
                     )
                   ],
@@ -91,7 +91,7 @@ class _LegendTile extends State<LegendTile> {
                       height: 30,
                       margin: const EdgeInsets.only(right: 20),
                       decoration: BoxDecoration(
-                          color: legend_lowest_color,
+                          color: legend_highest_color,
                           borderRadius: BorderRadius.circular(5)),
                     ),
                     DefaultTextStyle(
@@ -104,8 +104,9 @@ class _LegendTile extends State<LegendTile> {
                         textAlign: TextAlign.left,
                         frequency == -1
                             ? "---"
-                            : "0-${frequency} vols / semaine",
+                            : "+ ${frequency * 2} vols / semaine",
                       ),
+
                     )
                   ],
                 ))
