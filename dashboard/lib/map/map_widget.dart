@@ -8,7 +8,6 @@ import 'colored_map.dart';
 import 'package:dashboard/config.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/requests/countries.dart';
-import 'package:dashboard/requests/airport.dart';
 import 'package:dashboard/requests/result.dart';
 
 //Création d'un type (comme int ou double) qui permet de recquérir une fonction
@@ -33,9 +32,12 @@ class MapWidget extends StatelessWidget {
           country_selected_color; //Changer la valeur de sa couleur dans la Map qui gère la couleur des pays
     }
     if (ColoredMap.of(context)!.previousCountry != "") {
-      //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
-      getCountriesColor()[ColoredMap.of(context)!.previousCountry] =
-          country_empty_color;
+      if (ColoredMap.of(context)!.previousCountry !=
+          ColoredMap.of(context)!.currentCountry) {
+        //Pareil pour le pays qui était coloré avant mais doit retrouvé sa couleur de base
+        getCountriesColor()[ColoredMap.of(context)!.previousCountry] =
+            country_empty_color;
+      }
     }
     if (current_country_frequency.isNotEmpty) {
       int frequency = (current_country_frequency['max_frequency'] / 3).toInt();
@@ -49,8 +51,6 @@ class MapWidget extends StatelessWidget {
           getCountriesColor()[country.iso] = legend_highest_color;
         }
       }
-    } else {
-      print("COuntry not Selected");
     }
     return getCountriesColor();
   }
@@ -65,10 +65,7 @@ class MapWidget extends StatelessWidget {
       colors: getMapOfColoredCountry(context),
 
       callback: (id, name, tapDetails) async {
-        if (id != "") {
-          //await fetchAirport(id.toString());
-          await fetchCountries(id.toString());
-        }
+        print(id);
         onMapColorChange(id.toString());
       }, //calback
     );

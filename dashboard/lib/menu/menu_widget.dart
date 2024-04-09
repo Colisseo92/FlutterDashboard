@@ -76,6 +76,40 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+  Widget getEmptyCountryListWidget() {
+    if (widget.currentIso == "") {
+      return Container(
+          margin: const EdgeInsets.only(top: 20, left: 5, right: 5),
+          child: const DefaultTextStyle(
+            style: TextStyle(
+              color: surface_text_color,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Signika',
+            ),
+            child: Text(
+              "Vous n'avez selectionné aucun pays",
+              textAlign: TextAlign.left,
+            ),
+          ));
+    } else {
+      return Container(
+          margin: const EdgeInsets.only(top: 20, left: 5, right: 5),
+          child: const DefaultTextStyle(
+            style: TextStyle(
+              color: surface_text_color,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Signika',
+            ),
+            child: Text(
+              "Nous ne disposons d'aucune données pour ce pays.",
+              textAlign: TextAlign.left,
+            ),
+          ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> airport = widget.destinations
@@ -99,9 +133,10 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _buildCountryExpansionTile(), // Génération de la tile du pays cliqué
+
                   Expanded(
                     child: ListView(
-                      shrinkWrap: false,
+                      shrinkWrap: true,
                       children: airport,
                     ),
                   ),
@@ -112,10 +147,10 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildRadioListTile(String title) {
+  Widget _buildRadioListTile(String iata, String city) {
     return RadioListTile(
-      title: Text(title),
-      value: title,
+      title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
+      value: iata,
       groupValue: _selectedCountry,
       toggleable: true,
       onChanged: _onRadioListTileSelected,
@@ -147,11 +182,14 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               horizontal: 16.0), // Espacement interne de la ExpansionTile
           leading: CircleAvatar(
             backgroundImage: AssetImage(
-                'flags/${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.iso!.toLowerCase() : "fr"}.jpg'),
+                'flags/${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.iso!.toLowerCase() : "empty"}.jpg'),
             radius: 15,
           ),
           title: Text(
               'Départ : ${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.getCountryName() : ""}'),
+          subtitle: Text(widget.destinations.isNotEmpty
+              ? ""
+              : "pas de données disponibles"),
           onExpansionChanged: (expanded) {
             setState(() {
               _showCountryOptions = expanded;
@@ -170,7 +208,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           children: _showCountryOptions
               ? (widget.currentCountry.isNotEmpty
                   ? widget.currentCountry.first.airports!
-                      .map((airport) => _buildRadioListTile(airport.iata_code!))
+                      .map((airport) => _buildRadioListTile(
+                          airport.iata_code!, airport.city!))
                       .toList()
                   : [])
               : [],

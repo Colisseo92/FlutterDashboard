@@ -89,6 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _country = await getCurrentCountryInfo(id.toString());
       destination_frequency = await getDestinationFrequency(id.toString());
     }
+    if (isMenuOpen == false) {
+      print("should open");
+      toggleMenu();
+    }
     setState(() {
       if (id != "") {
         previousCountry = currentCountry;
