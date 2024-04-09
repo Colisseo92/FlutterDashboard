@@ -3,7 +3,6 @@ import 'package:dashboard/requests/result.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:collection/collection.dart';
-
 import '../requests/card_infos.dart';
 import '../type/travel.dart';
 

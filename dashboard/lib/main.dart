@@ -8,6 +8,7 @@ import 'package:dashboard/menu/menu_widget.dart';
 import 'package:dashboard/map/country_iso_util.dart';
 import 'package:dashboard/map/colored_map.dart';
 import 'package:dashboard/map/map_widget.dart';
+import 'package:dashboard/popup/pop_up_welcome.dart';
 import 'package:flutter/widgets.dart';
 import 'config.dart';
 
@@ -57,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       BorderRadius.circular(20); // Forme légèrement carrée
 
   bool isMenuOpen = false;
+  bool _isDialogShown = false;
 
   List<Country> destinations = [];
   Map<String, dynamic> destination_frequency = {};
@@ -68,7 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (!_isDialogShown) {
+        showWelcomeDialog(context, setState);
+      }
       setState(() {
         _map_height = MediaQuery.of(context).size.height -
             (app_bar_height +
@@ -80,6 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
   }
+
+
 
   void onColorChange(String id) async {
     List<Country> _destinations = [];
@@ -232,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 key: UniqueKey(),
                                 onMapColorChange: onColorChange,
                                 current_country_frequency:
-                                    destination_frequency,
+                                destination_frequency,
                               ),
                             ),
                           ),
@@ -266,4 +273,4 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-//https://stackoverflow.com/questions/63233890/flutter-animatedcontainer-transform-from-righttoleft
+

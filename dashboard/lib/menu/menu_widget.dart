@@ -159,6 +159,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
 
   Widget _buildCountryExpansionTile() {
     return Card(
+      color:Color.fromRGBO(200, 240, 200,0.75),
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
         borderRadius:
@@ -180,6 +181,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           ),
           tilePadding: const EdgeInsets.symmetric(
               horizontal: 16.0), // Espacement interne de la ExpansionTile
+          backgroundColor: Colors.grey,
           leading: CircleAvatar(
             backgroundImage: AssetImage(
                 'flags/${widget.currentCountry.isNotEmpty ? widget.currentCountry.first.iso!.toLowerCase() : "empty"}.jpg'),
