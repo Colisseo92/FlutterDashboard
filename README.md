@@ -36,6 +36,3 @@ Autres repositories en lien avec le dashboard
 [BackEnd - Javascript](https://github.com/Colisseo92/DashBoardJavascript)\
 [BackEnd - Python](https://github.com/Colisseo92/DashBoardPython)
 
-
-![Logo](https://github.com/Colisseo92/FlutterDashboard/blob/main/dashboard/logo.jpg)
-
