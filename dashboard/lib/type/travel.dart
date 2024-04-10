@@ -5,6 +5,8 @@ class Travel {
   String? to;
   String? time;
   int? mean_prices;
+  int? max_price;
+  int? interval;
   List<dynamic>? prices;
 
   Travel({
@@ -15,6 +17,8 @@ class Travel {
     required this.time,
     required this.prices,
     required this.mean_prices,
+    required this.max_price,
+    required this.interval,
   });
 
   Travel.fromJson(Map<String, dynamic> json) {
@@ -25,5 +29,7 @@ class Travel {
     time = json['flight_time'];
     mean_prices = json['mean_price'] as int;
     prices = json['prices'] as List<dynamic>;
+    max_price = json['max_price'] as int;
+    interval = json['interval'] as int;
   }
 }

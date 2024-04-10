@@ -25,7 +25,7 @@ class DestinationCountryCard extends StatelessWidget {
       ),
       title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
       onTap: () async {
-        Travel travel = await getTravelInfo(selected_country!, city);
+        Travel travel = await getTravelInfo(selected_country!, iata);
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {

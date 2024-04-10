@@ -147,7 +147,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildRadioListTile(String iata, String city) {
+  Widget _buildRadioListTile(String iata, String? city) {
     return RadioListTile(
       title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
       value: iata,
@@ -159,7 +159,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
 
   Widget _buildCountryExpansionTile() {
     return Card(
-      color:Color.fromRGBO(200, 240, 200,0.75),
+      color: Color.fromRGBO(200, 240, 200, 0.75),
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
         borderRadius:
@@ -210,8 +210,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           children: _showCountryOptions
               ? (widget.currentCountry.isNotEmpty
                   ? widget.currentCountry.first.airports!
-                      .map((airport) => _buildRadioListTile(
-                          airport.iata_code!, airport.city!))
+                      .map((airport) =>
+                          _buildRadioListTile(airport.iata_code!, airport.city))
                       .toList()
                   : [])
               : [],

@@ -45,7 +45,7 @@ void travelDetailsDialog(BuildContext context, Travel travel) {
                     child: LineChart(
                       LineChartData(
                         minY: 0,
-                        maxY: 3000,
+                        maxY: travel.max_price!.toDouble(),
                         lineBarsData: [
                           LineChartBarData(
                             spots: getListPrices(travel.prices),
@@ -101,8 +101,9 @@ void travelDetailsDialog(BuildContext context, Travel travel) {
                               fontSize: 14,
                             ),
                             reservedSize: 40,
+                            interval: travel.interval!.toDouble(),
                             getTitles: (value) {
-                              if (value % 500 == 0) {
+                              if (value % 1 == 0) {
                                 return value.toInt().toString();
                               } else {
                                 return '';
