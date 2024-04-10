@@ -110,7 +110,6 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           ));
     }
   }
-
   List<Widget> getListWidgetBySize(List<Widget> airport) {
     if (widget.currentCountry.isNotEmpty) {
       if (widget.currentCountry.first.airports!.length > 4) {
@@ -146,7 +145,6 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
       ];
     }
   }
-
   @override
   Widget build(BuildContext context) {
     List<Widget> airport = widget.destinations
