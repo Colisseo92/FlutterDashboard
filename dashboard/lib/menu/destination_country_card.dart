@@ -1,4 +1,6 @@
 import 'package:dashboard/map/country_iso_util.dart';
+import 'package:dashboard/requests/result.dart';
+import 'package:dashboard/type/travel.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/type/destination_country.dart';
 import '../config.dart';
@@ -15,17 +17,19 @@ class DestinationCountryCard extends StatelessWidget {
     super.key,
   });
 
-  Widget _buildCityExpansionTile(BuildContext context, String city) {
+  Widget _buildCityExpansionTile(
+      BuildContext context, String? city, String iata) {
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      title: Text(city),
-      onTap: () {
+      title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
+      onTap: () async {
+        Travel travel = await getTravelInfo(selected_country!, iata);
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {
-          travelDetailsDialog(context, city, selected_country!);
+          travelDetailsDialog(context, travel);
         }
       },
     );
@@ -40,7 +44,7 @@ class DestinationCountryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: ExpansionTile(
-        backgroundColor: card_surface, // Couleur de fond de la tuile
+        backgroundColor: Colors.white, // Couleur de fond de la tuile
         //iconColor: Colors.black, // Couleur de l'icône lorsque la tuile est ouverte
         textColor: text_color, // Couleur du texte
         //collapsedTextColor: Colors.black, // Couleur du texte lorsque la tuile est réduite
@@ -59,7 +63,8 @@ class DestinationCountryCard extends StatelessWidget {
         title: Text(getCountryWithIso(country.iso!.toLowerCase())!),
         subtitle: Text("${country.airports!.length} aéroport(s)"),
         children: country.airports!
-            .map((city) => _buildCityExpansionTile(context, city.iata_code!))
+            .map((city) =>
+                _buildCityExpansionTile(context, city.city, city.iata_code!))
             .toList(),
       ),
     );

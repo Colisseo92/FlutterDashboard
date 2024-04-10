@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   double _map_height = 0;
 
   BorderRadiusGeometry _borderRadius =
-  BorderRadius.circular(20); // Forme légèrement carrée
+      BorderRadius.circular(20); // Forme légèrement carrée
 
   bool isMenuOpen = false;
   bool _isDialogShown = false;
@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String previousCountry = "";
   String currentCountryName = "";
 
-
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -77,7 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       setState(() {
         _map_height = MediaQuery.of(context).size.height -
-            (app_bar_height + 2 * 10 + 2 * space_between_surface + _legend_height);
+            (app_bar_height +
+                2 * 10 +
+                2 * space_between_surface +
+                _legend_height);
         _menu_height = MediaQuery.of(context).size.height -
             (app_bar_height + 2 * 10 + 2 * space_between_surface);
       });
@@ -93,6 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _destinations = await getDestinationCountry(id.toString());
       _country = await getCurrentCountryInfo(id.toString());
       destination_frequency = await getDestinationFrequency(id.toString());
+    }
+    if (isMenuOpen == false) {
+      print("should open");
+      toggleMenu();
     }
     setState(() {
       if (id != "") {
