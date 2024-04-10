@@ -18,12 +18,12 @@ class DestinationCountryCard extends StatelessWidget {
   });
 
   Widget _buildCityExpansionTile(
-      BuildContext context, String? city, String iata) {
+      BuildContext context, String city, String iata) {
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
+      title: Text("${iata} - ${city}"),
       onTap: () async {
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
@@ -81,7 +81,7 @@ class DestinationCountryCard extends StatelessWidget {
         subtitle: Text("${country.airports!.length} aéroport(s)"),
         children: country.airports!
             .map((city) =>
-                _buildCityExpansionTile(context, city.city, city.iata_code!))
+                _buildCityExpansionTile(context, city.city!, city.iata_code!))
             .toList(),
       ),
     );

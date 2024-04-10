@@ -94,7 +94,7 @@ void travelDetailsDialogPrice(BuildContext context, Travel travel) {
                         lineBarsData: [
                           LineChartBarData(
                             spots: getListPrices(travel.prices),
-                            isCurved: true,
+                            isCurved: false,
                             colors: [surface_color],
                             barWidth: 4,
                             isStrokeCapRound: true,
