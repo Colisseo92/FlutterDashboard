@@ -209,7 +209,6 @@ void travelDetailsDialogWithoutPrice(BuildContext context, Travel travel) {
                     fontSize: 14,
                   ),
                 ),
-                SizedBox(height: 10),
               ])),
           actions: <Widget>[
             TextButton(

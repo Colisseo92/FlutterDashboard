@@ -28,7 +28,20 @@ class DestinationCountryCard extends StatelessWidget {
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {
+          showDialog(
+            barrierDismissible: false,
+            builder: (ctx) {
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: surface_color,
+                ),
+              );
+            },
+            context: context,
+          );
           Travel travel = await getTravelInfo(selected_country!, iata);
+          Navigator.of(context).pop();
           if (travel.prices!.isEmpty || travel.prices == null) {
             travelDetailsDialogWithoutPrice(context, travel);
           } else {
