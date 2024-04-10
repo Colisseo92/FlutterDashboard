@@ -26,7 +26,7 @@ void travelDetailsDialogPrice(BuildContext context, Travel travel) {
               color: surface_color,
               fontWeight: FontWeight.bold,
             )),
-        backgroundColor: background_sruface_color,
+        backgroundColor: background_color2,
         content: Container(
           height: MediaQuery.of(context).size.height * 0.8,
           width: MediaQuery.of(context).size.width * 0.75,
@@ -35,7 +35,7 @@ void travelDetailsDialogPrice(BuildContext context, Travel travel) {
             children: [
               Text(
                 textAlign: TextAlign.left,
-                'CO2 produit : beaucoup trop     \nDistance : ${travel.distance_km} kms\nTemps moyen de trajet : ${travel.time} \nPrix moyen de ce trajet : ${travel.mean_prices}\$',
+                'Distance : ${travel.distance_km} kms\nTemps moyen de trajet : ${travel.time} \nPrix moyen de ce trajet : ${travel.mean_prices}\$',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -48,6 +48,7 @@ void travelDetailsDialogPrice(BuildContext context, Travel travel) {
                     'Prix moyen par mois de ce trajet',
                     style: TextStyle(
                       fontSize: 18,
+                      color: surface_color,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -177,7 +178,12 @@ void travelDetailsDialogPrice(BuildContext context, Travel travel) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Fermer'),
+            child: Text(
+              'Fermer',
+              style: TextStyle(
+                color: surface_color,
+              ),
+            ),
           ),
         ],
       );
@@ -197,7 +203,7 @@ void travelDetailsDialogWithoutPrice(BuildContext context, Travel travel) {
                 color: surface_color,
                 fontWeight: FontWeight.bold,
               )),
-          backgroundColor: background_sruface_color,
+          backgroundColor: background_color2,
           content: Container(
               width: MediaQuery.of(context).size.width * 0.75,
               child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -215,7 +221,12 @@ void travelDetailsDialogWithoutPrice(BuildContext context, Travel travel) {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Fermer'),
+              child: Text(
+                'Fermer',
+                style: TextStyle(
+                  color: surface_color,
+                ),
+              ),
             ),
           ],
         );

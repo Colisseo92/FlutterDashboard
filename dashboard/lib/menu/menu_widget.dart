@@ -178,6 +178,8 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     return RadioListTile(
       title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
       value: iata,
+      fillColor:
+          MaterialStateColor.resolveWith((states) => legend_highest_color2),
       groupValue: _selectedCountry,
       toggleable: true,
       onChanged: _onRadioListTileSelected,
