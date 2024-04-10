@@ -66,6 +66,7 @@ flutter:
     uses-material-design: true
     assets:
         - plane.jpeg
+        - logo.jpg
         - flags/fr.jpg
         - flags/ad.jpg
         - flags/ae.jpg

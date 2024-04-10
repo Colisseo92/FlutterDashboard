@@ -18,18 +18,35 @@ class DestinationCountryCard extends StatelessWidget {
   });
 
   Widget _buildCityExpansionTile(
-      BuildContext context, String? city, String iata) {
+      BuildContext context, String city, String iata) {
     return ListTile(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),
-      title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
+      title: Text("${iata} - ${city}"),
       onTap: () async {
-        Travel travel = await getTravelInfo(selected_country!, iata);
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {
-          travelDetailsDialog(context, travel);
+          showDialog(
+            barrierDismissible: false,
+            builder: (ctx) {
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: surface_color,
+                ),
+              );
+            },
+            context: context,
+          );
+          Travel travel = await getTravelInfo(selected_country!, iata);
+          Navigator.of(context).pop();
+          if (travel.prices!.isEmpty || travel.prices == null) {
+            travelDetailsDialogWithoutPrice(context, travel);
+          } else {
+            travelDetailsDialogPrice(context, travel);
+          }
         }
       },
     );
@@ -64,7 +81,7 @@ class DestinationCountryCard extends StatelessWidget {
         subtitle: Text("${country.airports!.length} aéroport(s)"),
         children: country.airports!
             .map((city) =>
-                _buildCityExpansionTile(context, city.city, city.iata_code!))
+                _buildCityExpansionTile(context, city.city!, city.iata_code!))
             .toList(),
       ),
     );
