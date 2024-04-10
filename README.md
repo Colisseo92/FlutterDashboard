@@ -3,7 +3,7 @@
 
 Dashboard sur les vols dans le monde !
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/5/54/Letter_A.svg)
+![alt text](https://github.com/Colisseo92/FlutterDashboard/blob/main/dashboard/presentation)
 
 
 ## Informations
