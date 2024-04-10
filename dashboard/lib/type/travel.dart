@@ -27,9 +27,9 @@ class Travel {
     from = json['from'] as String;
     to = json['to'] as String;
     time = json['flight_time'];
-    mean_prices = json['mean_price'] as int;
+    mean_prices = json['mean_price'];
     prices = json['prices'] as List<dynamic>;
-    max_price = json['max_price'] as int;
-    interval = json['interval'] as int;
+    max_price = json['max_price'];
+    interval = json['interval'];
   }
 }

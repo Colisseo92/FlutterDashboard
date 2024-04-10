@@ -86,18 +86,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
-
   void onColorChange(String id) async {
     List<Country> _destinations = [];
     List<Country> _country = [];
+    bool hasBeenOpened = false;
     if (id != "") {
       _destinations = await getDestinationCountry(id.toString());
       _country = await getCurrentCountryInfo(id.toString());
       destination_frequency = await getDestinationFrequency(id.toString());
     }
     if (isMenuOpen == false) {
-      print("should open");
+      hasBeenOpened = true;
       toggleMenu();
     }
     setState(() {
@@ -110,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         destinations = _destinations;
         country = _country;
       }
-      if (id == "") {
+      if (id == "" && !hasBeenOpened) {
         toggleMenu();
       }
     });
@@ -239,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 key: UniqueKey(),
                                 onMapColorChange: onColorChange,
                                 current_country_frequency:
-                                destination_frequency,
+                                    destination_frequency,
                               ),
                             ),
                           ),
@@ -272,5 +271,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-

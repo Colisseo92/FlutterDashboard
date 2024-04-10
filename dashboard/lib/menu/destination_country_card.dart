@@ -25,11 +25,15 @@ class DestinationCountryCard extends StatelessWidget {
       ),
       title: Text(city != null ? "${iata} - ${city}" : "${iata}"),
       onTap: () async {
-        Travel travel = await getTravelInfo(selected_country!, iata);
         if (selected_country == null) {
           AirportNotSelectedPopup(context);
         } else {
-          travelDetailsDialog(context, travel);
+          Travel travel = await getTravelInfo(selected_country!, iata);
+          if (travel.prices!.isEmpty || travel.prices == null) {
+            travelDetailsDialogWithoutPrice(context, travel);
+          } else {
+            travelDetailsDialogPrice(context, travel);
+          }
         }
       },
     );

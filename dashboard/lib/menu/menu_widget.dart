@@ -39,6 +39,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   bool _showElements = false;
+  int c_flex = 0;
   String? _selectedCountry;
   bool _showCountryOptions = false;
 
@@ -110,6 +111,42 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
     }
   }
 
+  List<Widget> getListWidgetBySize(List<Widget> airport) {
+    if (widget.currentCountry.isNotEmpty) {
+      if (widget.currentCountry.first.airports!.length > 4) {
+        return [
+          Expanded(
+              flex: c_flex,
+              child: ListView(
+                shrinkWrap: true,
+                children: [_buildCountryExpansionTile()],
+              ) // Génération de la tile du pays cliqué
+              ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: airport,
+            ),
+          )
+        ];
+      } else {
+        return [
+          _buildCountryExpansionTile(),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: airport,
+            ),
+          )
+        ];
+      }
+    } else {
+      return [
+        _buildCountryExpansionTile(),
+      ];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> airport = widget.destinations
@@ -129,19 +166,9 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
               margin:
                   const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildCountryExpansionTile(), // Génération de la tile du pays cliqué
-
-                  Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: airport,
-                    ),
-                  ),
-                ],
-              ),
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: getListWidgetBySize(airport)),
             ));
       },
     );
@@ -195,6 +222,7 @@ class _MenuState extends State<Menu> with SingleTickerProviderStateMixin {
           onExpansionChanged: (expanded) {
             setState(() {
               _showCountryOptions = expanded;
+              c_flex = _showCountryOptions ? 1 : 0;
             });
           },
           trailing: Icon(
