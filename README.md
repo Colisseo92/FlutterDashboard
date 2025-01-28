@@ -15,7 +15,6 @@ Ce dashboard a été réalisé dans le cadre d'un projet scolaire.
 
 - [@Colisseo92](https://github.com/Colisseo92)
 - [@Orev](https://github.com/Veronique1919)
-- [@cKaribou ](https://github.com/cKaribou)
 
 
 ## Tech Stack
